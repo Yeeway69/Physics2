@@ -21,7 +21,17 @@ public:
     update_status PostUpdate();
     bool CleanUp();
 
+
 private:
+
+    //angle in radians
+    float cannonAngle;  // Angle in degrees
+    float cannonPower;  // Firing power
+
+
+    float groundHeight; // Y coordinate of the ground
+
+    float groundwidth; // X coordinate of the ground
 
     struct Body {
         fPoint position;

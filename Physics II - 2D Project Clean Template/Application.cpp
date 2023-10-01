@@ -32,6 +32,7 @@ Application::Application()
 
 Application::~Application()
 {
+	
 	p2List_item<Module*>* item = list_modules.getLast();
 
 	while(item != NULL)

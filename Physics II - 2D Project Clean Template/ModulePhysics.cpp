@@ -9,6 +9,17 @@ using namespace std;
 #include "ModuleRender.h"
 #include "ModuleInput.h"
 #include <string>
+#include "Application.h"
+#include "ModuleWindow.h"
+#include "ModuleRender.h"
+#include "ModulePhysics.h"
+#include "ModuleInput.h"
+#include "ModuleAudio.h"
+//include <cmath> for trigonometric functions
+#include <cmath>
+#define DEGTORAD(angleDegrees) ((angleDegrees) * M_PI / 180.0)
+
+
 
 
 ModulePhysics::ModulePhysics(Application* app, bool start_enabled) : Module(app, start_enabled)
@@ -23,6 +34,15 @@ ModulePhysics::ModulePhysics(Application* app, bool start_enabled) : Module(app,
 	player->elasticity = 0.5f; // some bounce
 	player->friction = 0.1f; // some friction
 	bodies.push_back(player);
+
+	// Example: Initialize a platform body (this is just for demonstration and can be adapted as needed)
+	int width, height;
+	App->window->GetWindowSize(width, height);
+	groundHeight = height / 2.0f; // Initialize ground halfway up the window
+
+	//firing
+	cannonAngle = 45.0f;  // Default to 45 degrees
+	cannonPower = 5.0f;   // Default power
 }
 
 // Destructor
@@ -44,6 +64,49 @@ void ModulePhysics::ApplyForce(Body& body, const fPoint& force)
 
 update_status ModulePhysics::PreUpdate()
 {
+
+	// Hotkey to adjuct cannon ball shooting direction
+	if (App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT)
+	{
+		cannonAngle -= 1.0f;
+	}
+	if (App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
+	{
+		cannonAngle += 1.0f;
+	}
+	if (App->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT)  // Adjust as needed based on your input handling
+	{
+		cannonPower += 0.1f;
+	}
+	if (App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT)  // Adjust as needed based on your input handling
+	{
+		cannonPower -= 0.1f;
+	}
+
+
+	// Cannon Representation
+	int width, height;
+	App->window->GetWindowSize(width, height);
+	const fPoint cannonPosition = { 150, (float)height - 350 };
+
+
+	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN) // Listen for SPACEBAR press
+	{
+		Body* cannonball = new Body();
+		cannonball->position = cannonPosition;
+		cannonball->velocity = { -2.0f, -4.0f }; // Initial velocity (adjust as needed)
+		cannonball->acceleration = gravity; // Affected by gravity
+		cannonball->mass = 1.0f; // Arbitrary mass
+		cannonball->elasticity = 0.5f; // Some bounce
+		cannonball->friction = 0.1f; // Some friction
+		bodies.push_back(cannonball);
+
+		float radianAngle = DEGTORAD(cannonAngle);  // Convert angle  to radians
+		cannonball->velocity.x = cannonPower * cosf(radianAngle);
+		cannonball->velocity.y = -cannonPower * sinf(radianAngle);  // Negative because y is up
+
+	}
+
 	float deltaTime = 0.016f; // Assuming 60 FPS for now
 
 	// Iterate over each physics body and update
@@ -81,13 +144,50 @@ update_status ModulePhysics::PreUpdate()
 		}
 
 		body->velocity += gravity * deltaTime;
+
+		// Check for collisions with the ground
+		if (body->position.y >= height - 300) // Assuming 10 is the radius of the cannonball
+		{
+			body->velocity.y = -body->elasticity * body->velocity.y; // Reflect and reduce vertical velocity
+			body->position.y = height - 300; // Reset position to be just on the ground
+		}
+		//Friction
+		if (body->position.y >= height - 10)
+		{
+			body->velocity.x *= (1 - body->friction); // Apply friction to horizontal velocity
+		}
+		//Limiting Bounces:
+		if (abs(body->velocity.y) < 0.1f)
+		{
+			body->velocity.y = 0.0f;
+		}
+
 	}
+
+	
+
 
 	return UPDATE_CONTINUE;
 }
 
 update_status ModulePhysics::PostUpdate()
 {
+
+	//draw the ground with a line
+	int width, height;
+	App->window->GetWindowSize(width, height);
+	App->renderer->DrawLine(0, height - 290, width, height - 300, 255, 255, 255);
+
+
+
+	// In the PostUpdate method:
+	for (list<Body*>::iterator it = bodies.begin(); it != bodies.end(); ++it)
+	{
+		Body* body = *it;
+		App->renderer->DrawCircle(body->position.x, body->position.y, 10, 255, 0, 0); // Drawing the cannonball
+	}
+
+
 	if (App->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN)
 		debug = !debug;
 

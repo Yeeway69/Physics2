@@ -13,6 +13,12 @@ ModuleWindow::~ModuleWindow()
 {
 }
 
+void ModuleWindow::GetWindowSize(int& width, int& height)
+{
+	SDL_GetWindowSize(window, &width, &height);
+}
+
+
 // Called before render is available
 bool ModuleWindow::Init()
 {
