@@ -206,6 +206,7 @@ update_status ModulePhysics::PostUpdate()
 	//the angle and power
 	title = "Cannon Simulation - Angle: " + std::to_string(cannonAngle) + "° Power: " + std::to_string(cannonPower);
 	SDL_SetWindowTitle(App->window->window, title.c_str());
+	
 
 
 	if (debug)
@@ -219,6 +220,8 @@ update_status ModulePhysics::PostUpdate()
 
 	return UPDATE_CONTINUE;
 }
+
+
 
 
 // Called before quitting
