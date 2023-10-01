@@ -197,10 +197,16 @@ update_status ModulePhysics::PostUpdate()
 		currentScheme = static_cast<IntegrationScheme>((currentScheme + 1) % 3);
 	}
 
+	//title display
+	//the scheme switch
 	const char* schemeNames[] = { "EULER", "SYMPLECTIC_EULER", "VELOCITY_VERLET" };
 	std::string title = "Physics Simulation - Current Scheme: ";
 	title += schemeNames[currentScheme];
 	App->window->SetTitle(title.c_str());
+	//the angle and power
+	title = "Cannon Simulation - Angle: " + std::to_string(cannonAngle) + "° Power: " + std::to_string(cannonPower);
+	SDL_SetWindowTitle(App->window->window, title.c_str());
+
 
 	if (debug)
 	{
