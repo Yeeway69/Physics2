@@ -16,12 +16,21 @@ public:
 
 	p2Point()
 	{}
+	//add operator * to multiply a point by a float, to fix the problem where it can not be multiplied by a float
+	p2Point operator * (const TYPE& value) const
+	{
+		return { x * value, y * value };
+	}
+
 
 	p2Point(const p2Point& p)
 	{
 		x = p.x;
 		y = p.y;
 	}
+
+	p2Point(const TYPE& _x, const TYPE& _y) : x(_x), y(_y)
+	{}
 
 	// Math ------------------------------------------------
 	p2Point operator -(const p2Point &v) const

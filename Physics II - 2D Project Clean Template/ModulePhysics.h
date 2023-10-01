@@ -1,19 +1,54 @@
 #pragma once
 #include "Module.h"
 #include "Globals.h"
+#include "p2Point.h"
+#include "SDL/include/SDL.h"
+//include c++ standard libraries here
+#include <list>
+using namespace std;
+
+
+typedef p2Point<float> fPoint;
 
 class ModulePhysics : public Module
 {
 public:
-	ModulePhysics(Application* app, bool start_enabled = true);
-	~ModulePhysics();
+    ModulePhysics(Application* app, bool start_enabled = true);
+    ~ModulePhysics();
 
-	bool Start();
-	update_status PreUpdate();
-	update_status PostUpdate();
-	bool CleanUp();
+    bool Start();
+    update_status PreUpdate();
+    update_status PostUpdate();
+    bool CleanUp();
 
 private:
 
-	bool debug;
+    struct Body {
+        fPoint position;
+        fPoint velocity;
+        fPoint acceleration;
+        float mass;
+        float elasticity; // coefficient of restitution (bounce factor)
+        float friction; // coefficient of friction
+    };
+
+    list<Body*> bodies; // List of all physics bodies
+
+    const fPoint gravity = { 0.0f, 9.81f }; // gravitational acceleration (assuming Y is up)
+
+    bool debug;
+
+    // Apply a force to a body
+    void ApplyForce(Body& body, const fPoint& force);
+
+    enum IntegrationScheme
+    {
+        EULER,
+        SYMPLECTIC_EULER,
+        VELOCITY_VERLET
+    };
+
+    IntegrationScheme currentScheme;
+
+
 };
