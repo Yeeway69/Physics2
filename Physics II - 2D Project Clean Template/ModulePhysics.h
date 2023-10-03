@@ -10,6 +10,15 @@ using namespace std;
 
 typedef p2Point<float> fPoint;
 
+enum FRAMERATE_MODE
+{
+    FRM_FIXED,
+    FRM_VARIABLE,
+    FRM_SEMI_FIXED
+};
+
+
+
 class ModulePhysics : public Module
 {
 public:
@@ -22,6 +31,19 @@ public:
     bool CleanUp();
 
     void UpdateWindowTitle();  // Add this line
+
+
+    //for framrate control
+    FRAMERATE_MODE currentMode = FRM_FIXED; // Default mode
+    const float fixedFrameTime = 1.0f / 60.0f; // for 60 FPS
+    float lastFrameTime = 0.0f;
+    float currentFrameTime = 0.0f; // This will be updated during runtime
+
+    // Debug Stats
+    int targetFPS = 60;  // Default target FPS
+    float targetFrameTime = fixedFrameTime;
+    int currentFPS = 0;  // This will be updated during runtime
+    
 
 private:
 

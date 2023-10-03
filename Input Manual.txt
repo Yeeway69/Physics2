@@ -1,0 +1,4 @@
+Q and Z - control target framerate
+
+I - switch from intergration schemes
+

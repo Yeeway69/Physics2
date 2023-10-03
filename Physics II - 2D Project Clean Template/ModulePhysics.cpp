@@ -18,6 +18,8 @@ using namespace std;
 //include <cmath> for trigonometric functions
 #include <cmath>
 #define DEGTORAD(angleDegrees) ((angleDegrees) * M_PI / 180.0)
+#include <algorithm>
+
 
 
 
@@ -42,7 +44,7 @@ ModulePhysics::ModulePhysics(Application* app, bool start_enabled) : Module(app,
 
 	//firing
 	cannonAngle = 45.0f;  // Default to 45 degrees
-	cannonPower = 5.0f;   // Default power
+	cannonPower = 60.0f;   // Default power
 }
 
 // Destructor
@@ -64,6 +66,7 @@ void ModulePhysics::ApplyForce(Body& body, const fPoint& force)
 
 void ModulePhysics::UpdateWindowTitle()
 {
+    // Scheme
     std::string scheme;
     switch (currentScheme)
     {
@@ -72,13 +75,87 @@ void ModulePhysics::UpdateWindowTitle()
         case VELOCITY_VERLET: scheme = "Velocity-Verlet"; break;
     }
 
-    std::string title = "Scheme: " + scheme + " | Angle: " + std::to_string(cannonAngle) + "° | Power: " + std::to_string(cannonPower);
+    // Framerate Mode
+    std::string framerateModeStr;
+    switch (currentMode)
+    {
+        case FRM_FIXED: framerateModeStr = "Fixed Framerate"; break;
+        case FRM_VARIABLE: framerateModeStr = "Variable Framerate"; break;
+        case FRM_SEMI_FIXED: framerateModeStr = "Semi-Fixed Framerate"; break;
+    }
+
+    std::string fpsInfo = " | Target FPS: " + std::to_string(targetFPS) + 
+                          " | Current FPS: " + std::to_string(currentFPS);
+   
+    // Consolidate all information into a single title string
+    std::string title = "Framerate Mode: " + framerateModeStr + fpsInfo + 
+                        " | Scheme: " + scheme + 
+                        " | Angle: " + std::to_string(cannonAngle) + "° | Power: " + std::to_string(cannonPower);
+    
     SDL_SetWindowTitle(App->window->window, title.c_str());
 }
 
 
+
 update_status ModulePhysics::PreUpdate()
 {
+
+	
+
+
+	//Calculate Frame Time:
+	currentFrameTime = SDL_GetTicks() / 1000.0f; // Convert milliseconds to seconds
+	float deltaTime = currentFrameTime - lastFrameTime;
+	lastFrameTime = currentFrameTime;  // Update lastFrameTime for the next frame
+
+	const float maxDeltaTime = 1.0f / 10.0f; // Maximum allowed deltaTime
+    #undef min
+	deltaTime = std::min(deltaTime, maxDeltaTime);
+
+
+	//Implement Framerate Control Logic:
+	switch (currentMode)
+	{
+	case FRM_FIXED:
+	{
+		float frameDelay = fixedFrameTime * 1000.0f - deltaTime * 1000.0f; // Convert to milliseconds
+		if (frameDelay > 0)
+			SDL_Delay((Uint32)frameDelay);
+
+		// Update debug stats
+		currentFPS = 1.0f / fixedFrameTime;
+		currentFrameTime = fixedFrameTime;
+	}
+	break;
+	case FRM_VARIABLE:
+	{
+		// No artificial delay, simply compute the debug stats
+		currentFPS = 1.0f / deltaTime;
+		currentFrameTime = deltaTime;
+	}
+	break;
+	case FRM_SEMI_FIXED:
+	{
+		// Physics and logic calculations at a fixed rate, rendering as fast as possible
+		if (deltaTime < fixedFrameTime)
+		{
+			// If not enough time has passed for the next fixed update, delay
+			float frameDelay = fixedFrameTime * 1000.0f - deltaTime * 1000.0f; // Convert to milliseconds
+			SDL_Delay((Uint32)frameDelay);
+		}
+
+		// For simplicity, in this example, we're only doing the fixed update.
+		// In a real-world scenario, you'd run the rendering logic as fast as possible here.
+
+		// Update debug stats
+		currentFPS = 1.0f / fixedFrameTime;
+		currentFrameTime = fixedFrameTime;
+	}
+	    break;
+	
+    }
+
+
 
 	// Hotkey to adjuct cannon ball shooting direction
 	if (App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT)
@@ -122,7 +199,7 @@ update_status ModulePhysics::PreUpdate()
 
 	}
 
-	float deltaTime = 0.016f; // Assuming 60 FPS for now
+	//float deltaTime = 0.016f; // Assuming 60 FPS for now
 
 	// Iterate over each physics body and update
 	for (std::list<Body*>::iterator it = bodies.begin(); it != bodies.end(); ++it)
@@ -180,6 +257,8 @@ update_status ModulePhysics::PreUpdate()
 	}
 
 	
+	lastFrameTime = currentFrameTime;
+
 
 
 	return UPDATE_CONTINUE;
@@ -215,6 +294,38 @@ update_status ModulePhysics::PostUpdate()
 	//title display
 	//the scheme switch
 	UpdateWindowTitle();
+
+	//HotKeys to Swap Framerate control Schemes
+	if (App->input->GetKey(SDL_SCANCODE_F4) == KEY_DOWN)
+	{
+		currentMode = FRM_FIXED;
+		UpdateWindowTitle();
+	}
+	if (App->input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN)
+	{
+		currentMode = FRM_VARIABLE;
+		UpdateWindowTitle();
+	}
+	if (App->input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN)
+	{
+		currentMode = FRM_SEMI_FIXED;
+		UpdateWindowTitle();
+	}
+
+	//Handle Input for FPS Control:
+	if (App->input->GetKey(SDL_SCANCODE_Q) == KEY_DOWN)
+	{
+		targetFPS += 10;
+		targetFrameTime = 1.0f / targetFPS;
+		UpdateWindowTitle();
+	}
+	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_DOWN)
+	{
+		targetFPS -= 10;
+		if (targetFPS < 1) targetFPS = 1;  // Ensure it doesn't go below 1
+		targetFrameTime = 1.0f / targetFPS;
+		UpdateWindowTitle();
+	}
 
 	
 
