@@ -62,6 +62,21 @@ void ModulePhysics::ApplyForce(Body& body, const fPoint& force)
 	body.velocity += acceleration;
 }
 
+void ModulePhysics::UpdateWindowTitle()
+{
+    std::string scheme;
+    switch (currentScheme)
+    {
+        case EULER: scheme = "Euler"; break;
+        case SYMPLECTIC_EULER: scheme = "Symplectic Euler"; break;
+        case VELOCITY_VERLET: scheme = "Velocity-Verlet"; break;
+    }
+
+    std::string title = "Scheme: " + scheme + " | Angle: " + std::to_string(cannonAngle) + "Â° | Power: " + std::to_string(cannonPower);
+    SDL_SetWindowTitle(App->window->window, title.c_str());
+}
+
+
 update_status ModulePhysics::PreUpdate()
 {
 
@@ -199,13 +214,8 @@ update_status ModulePhysics::PostUpdate()
 
 	//title display
 	//the scheme switch
-	const char* schemeNames[] = { "EULER", "SYMPLECTIC_EULER", "VELOCITY_VERLET" };
-	std::string title = "Physics Simulation - Current Scheme: ";
-	title += schemeNames[currentScheme];
-	App->window->SetTitle(title.c_str());
-	//the angle and power
-	title = "Cannon Simulation - Angle: " + std::to_string(cannonAngle) + "° Power: " + std::to_string(cannonPower);
-	SDL_SetWindowTitle(App->window->window, title.c_str());
+	UpdateWindowTitle();
+
 	
 
 

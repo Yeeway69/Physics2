@@ -21,6 +21,7 @@ public:
     update_status PostUpdate();
     bool CleanUp();
 
+    void UpdateWindowTitle();  // Add this line
 
 private:
 
