@@ -32,6 +32,8 @@ public:
 
     void UpdateWindowTitle();  // Add this line
 
+    update_status PreUpdate(float deltaTime);  // Notice the float argument
+
 
     //for framrate control
     FRAMERATE_MODE currentMode = FRM_FIXED; // Default mode

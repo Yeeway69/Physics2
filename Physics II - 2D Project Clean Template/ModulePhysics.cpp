@@ -118,15 +118,15 @@ update_status ModulePhysics::PreUpdate()
 	{
 	case FRM_FIXED:
 	{
-		float frameDelay = fixedFrameTime * 1000.0f - deltaTime * 1000.0f; // Convert to milliseconds
+		float frameDelay = targetFrameTime * 1000.0f - deltaTime * 1000.0f; // Convert to milliseconds
 		if (frameDelay > 0)
 			SDL_Delay((Uint32)frameDelay);
-
+		break;
 		// Update debug stats
-		currentFPS = 1.0f / fixedFrameTime;
-		currentFrameTime = fixedFrameTime;
+		currentFPS = 1.0f / targetFrameTime;
+		currentFrameTime = targetFrameTime;
 	}
-	break;
+	
 	case FRM_VARIABLE:
 	{
 		// No artificial delay, simply compute the debug stats
