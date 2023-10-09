@@ -316,13 +316,13 @@ update_status ModulePhysics::PostUpdate()
 	}
 
 	//Handle Input for FPS Control:
-	if (App->input->GetKey(SDL_SCANCODE_Q) == KEY_DOWN)
+	if (App->input->GetKey(SDL_SCANCODE_E) == KEY_DOWN)
 	{
 		targetFPS += 10;
 		targetFrameTime = 1.0f / targetFPS;
 		UpdateWindowTitle();
 	}
-	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_DOWN)
+	if (App->input->GetKey(SDL_SCANCODE_Q) == KEY_DOWN)
 	{
 		targetFPS -= 10;
 		if (targetFPS < 1) targetFPS = 1;  // Ensure it doesn't go below 1
