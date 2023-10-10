@@ -40,7 +40,12 @@ public:
 	update_status Update();
 	bool CleanUp();
 
+
+
 private:
 
 	void AddModule(Module* mod);
+
+	float lastFrameTime = 0.0f;
+	float currentFrameTime = 0.0f;
 };

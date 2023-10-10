@@ -118,22 +118,24 @@ update_status ModulePhysics::PreUpdate()
 	{
 	case FRM_FIXED:
 	{
-		float frameDelay = fixedFrameTime * 1000.0f - deltaTime * 1000.0f; // Convert to milliseconds
+		float frameDelay = targetFrameTime * 1000.0f - deltaTime * 1000.0f; // Convert to milliseconds
 		if (frameDelay > 0)
 			SDL_Delay((Uint32)frameDelay);
-
+		
 		// Update debug stats
-		currentFPS = 1.0f / fixedFrameTime;
-		currentFrameTime = fixedFrameTime;
+		currentFPS = 1.0f / targetFrameTime;
+		currentFrameTime = targetFrameTime;
+		break;
 	}
-	break;
+	
 	case FRM_VARIABLE:
 	{
 		// No artificial delay, simply compute the debug stats
 		currentFPS = 1.0f / deltaTime;
 		currentFrameTime = deltaTime;
+		break;
 	}
-	break;
+	
 	case FRM_SEMI_FIXED:
 	{
 		// Physics and logic calculations at a fixed rate, rendering as fast as possible
@@ -150,8 +152,9 @@ update_status ModulePhysics::PreUpdate()
 		// Update debug stats
 		currentFPS = 1.0f / fixedFrameTime;
 		currentFrameTime = fixedFrameTime;
+		break;
 	}
-	    break;
+	    
 	
     }
 
@@ -313,13 +316,13 @@ update_status ModulePhysics::PostUpdate()
 	}
 
 	//Handle Input for FPS Control:
-	if (App->input->GetKey(SDL_SCANCODE_Q) == KEY_DOWN)
+	if (App->input->GetKey(SDL_SCANCODE_E) == KEY_DOWN)
 	{
 		targetFPS += 10;
 		targetFrameTime = 1.0f / targetFPS;
 		UpdateWindowTitle();
 	}
-	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_DOWN)
+	if (App->input->GetKey(SDL_SCANCODE_Q) == KEY_DOWN)
 	{
 		targetFPS -= 10;
 		if (targetFPS < 1) targetFPS = 1;  // Ensure it doesn't go below 1

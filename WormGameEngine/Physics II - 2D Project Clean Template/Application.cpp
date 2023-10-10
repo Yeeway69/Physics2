@@ -72,6 +72,13 @@ bool Application::Init()
 // Call PreUpdate, Update and PostUpdate on all modules
 update_status Application::Update()
 {
+	//currentFrameTime = SDL_GetTicks() / 1000.0f; // Convert milliseconds to seconds
+	//float deltaTime = currentFrameTime - lastFrameTime;
+	//lastFrameTime = currentFrameTime;  // Update lastFrameTime for the next frame
+
+	//physics->Update(deltaTime);
+	//// ... Update other modules as necessary
+
 	update_status ret = UPDATE_CONTINUE;
 	p2List_item<Module*>* item = list_modules.getFirst();
 
