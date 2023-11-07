@@ -159,6 +159,10 @@ update_status ModulePhysics::PreUpdate()
     }
 
 
+	// Before updating object velocities and positions
+	for (p2List_item<GameObject*>* item = objects.start; item != NULL; item = item->next) {
+		item->data->applyAerodynamicForces();
+	}
 
 	// Hotkey to adjuct cannon ball shooting direction
 	if (App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT)

@@ -23,6 +23,8 @@ void GameObject::ApplyForce(p2Point<float> force)
     acceleration.y += force.y / mass;
 }
 
+
+
 void GameObject::SetPosition(p2Point<float> pos) { position = pos; }
 p2Point<float> GameObject::GetPosition() const { return position; }
 void GameObject::SetVelocity(p2Point<float> vel) { velocity = vel; }

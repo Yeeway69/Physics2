@@ -3,6 +3,8 @@
 #include "Globals.h"
 #include "p2Point.h"
 #include "SDL/include/SDL.h"
+#include "p2List.h"
+#include "GameObject.h"
 //include c++ standard libraries here
 #include <list>
 using namespace std;
@@ -24,6 +26,8 @@ class ModulePhysics : public Module
 public:
     ModulePhysics(Application* app, bool start_enabled = true);
     ~ModulePhysics();
+
+    p2List<GameObject*> objects;
 
     bool Start();
     update_status PreUpdate();
