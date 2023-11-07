@@ -70,7 +70,9 @@ private:
     list<Body*> bodies; // List of all physics bodies
 
     const fPoint gravity = { 0.0f, 9.81f }; // gravitational acceleration (assuming Y is up)
-
+    Body* star = new Body();
+    Body* planet1 = new Body();
+    Body* planet2 = new Body();
     bool debug;
 
     // Apply a force to a body
