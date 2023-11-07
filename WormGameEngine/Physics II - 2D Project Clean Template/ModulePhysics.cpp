@@ -37,6 +37,25 @@ ModulePhysics::ModulePhysics(Application* app, bool start_enabled) : Module(app,
 	player->friction = 0.1f; // some friction
 	bodies.push_back(player);
 
+
+	//Creating other bodies
+	Body* star = new Body();
+	star->position = { 300.0f, 100.0f };
+	star->acceleration = { 0.0f, -9.81f };;
+	bodies.push_back(star);
+	Body* planet1 = new Body();
+	planet1->position = { 400.0f, 100.0f };
+	planet1->acceleration = { 0.0f, -9.81f };;
+	bodies.push_back(planet1);
+	Body* planet2 = new Body();
+	planet2->position = { 200.0f, 100.0f };
+	planet2->acceleration = { 0.0f, -9.81f };;
+	bodies.push_back(planet2);
+	/*Body* planet1 = new Body();
+	Body* planet1 = new Body();
+	Body* planet1 = new Body();*/
+
+
 	// Example: Initialize a platform body (this is just for demonstration and can be adapted as needed)
 	int width, height;
 	App->window->GetWindowSize(width, height);
