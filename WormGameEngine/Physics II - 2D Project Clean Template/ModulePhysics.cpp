@@ -42,12 +42,12 @@ ModulePhysics::ModulePhysics(Application* app, bool start_enabled) : Module(app,
 	
 	star->position = { 300.0f, 100.0f };
 	star->acceleration = { 0.0f, -9.81f };
-	star->mass = 100000.0f;
+	star->mass = 1000.0f;
 	bodies.push_back(star);
 	
 	planet1->position = { 400.0f, 100.0f };
 	planet1->acceleration = { 0.0f, -9.81f };
-	planet1->mass = 1000.0f;
+	planet1->mass = 100.0f;
 	bodies.push_back(planet1);
 	
 	planet2->position = { 200.0f, 100.0f };
@@ -134,7 +134,14 @@ void ModulePhysics::UpdateWindowTitle()
 update_status ModulePhysics::PreUpdate()
 {
 
+	//Calculate Frame Time:
+	currentFrameTime = SDL_GetTicks() / 1000.0f; // Convert milliseconds to seconds
+	float deltaTime = currentFrameTime - lastFrameTime;
+	lastFrameTime = currentFrameTime;  // Update lastFrameTime for the next frame
 
+	const float maxDeltaTime = 1.0f / 10.0f; // Maximum allowed deltaTime
+	#undef min
+	deltaTime = std::min(deltaTime, maxDeltaTime);
 
 
 	// Distances between the bodies
@@ -161,17 +168,16 @@ update_status ModulePhysics::PreUpdate()
 	object1->acceleration.y = force3.y / object1->mass;
 	object2->acceleration.x = force3.x / object2->mass;
 	object2->acceleration.y = force3.y / object2->mass;
+
+	planet1->velocity.x += planet1->acceleration.x * deltaTime;
+	planet1->velocity.y += planet1->acceleration.y * deltaTime;
+	planet1->position.x += planet1->velocity.x * deltaTime;
+	planet1->position.y += planet1->velocity.y * deltaTime;
+	
 	
 
 
-	//Calculate Frame Time:
-	currentFrameTime = SDL_GetTicks() / 1000.0f; // Convert milliseconds to seconds
-	float deltaTime = currentFrameTime - lastFrameTime;
-	lastFrameTime = currentFrameTime;  // Update lastFrameTime for the next frame
-
-	const float maxDeltaTime = 1.0f / 10.0f; // Maximum allowed deltaTime
-    #undef min
-	deltaTime = std::min(deltaTime, maxDeltaTime);
+	
 
 
 	//Implement Framerate Control Logic:

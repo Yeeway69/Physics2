@@ -7,7 +7,7 @@
 #include <list>
 using namespace std;
 
-const float G = 6.67430e-11f;
+const float G = -9.8f;
 typedef p2Point<float> fPoint;
 
 enum FRAMERATE_MODE
