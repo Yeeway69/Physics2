@@ -41,20 +41,35 @@ ModulePhysics::ModulePhysics(Application* app, bool start_enabled) : Module(app,
 	//Creating other bodies
 	
 	star->position = { 300.0f, 100.0f };
-	star->acceleration = { 0.0f, -9.81f };;
+	star->acceleration = { 0.0f, -9.81f };
+	star->mass = 100000.0f;
 	bodies.push_back(star);
 	
 	planet1->position = { 400.0f, 100.0f };
-	planet1->acceleration = { 0.0f, -9.81f };;
+	planet1->acceleration = { 0.0f, -9.81f };
+	planet1->mass = 1000.0f;
 	bodies.push_back(planet1);
 	
 	planet2->position = { 200.0f, 100.0f };
-	planet2->acceleration = { 0.0f, -9.81f };;
+	planet2->acceleration = { 0.0f, -9.81f };
+	planet2->mass = 100.0f;
 	bodies.push_back(planet2);
-	/*Body* planet1 = new Body();
-	Body* planet1 = new Body();
-	Body* planet1 = new Body();*/
 
+
+	//Creating other objects
+	object1->position = { 500.0f, 100.0f }; 
+	object1->velocity = { 10.0f, 0.0f }; 
+	object1->acceleration = { 0.0f, 0.0f };
+	object1->mass = 1.0f; 
+	object1->friction = 0.1f; 
+	bodies.push_back(object1);
+
+	object2->position = { 600.0f, 100.0f }; 
+	object2->velocity = { 20.0f, 0.0f }; 
+	object2->acceleration = { 0.0f, 0.0f };
+	object2->mass = 2.0f; 
+	object2->friction = 0.1f; 
+	bodies.push_back(object2);
 
 	// Example: Initialize a platform body (this is just for demonstration and can be adapted as needed)
 	int width, height;
@@ -119,38 +134,34 @@ void ModulePhysics::UpdateWindowTitle()
 update_status ModulePhysics::PreUpdate()
 {
 
-	
 
-	// Dentro de la función PreUpdate
 
-// ...
-
-// Gravitational Constants
-	const float G = 6.67430e-11f; // Gravitational constant
-
-	// Masses of the bodies
-	float starMass = 100000.0f; // Arbitrary mass for the star
-	float planetMass = 100.0f; // Arbitrary mass for the planets
 
 	// Distances between the bodies
 	fPoint dist1 = { star->position.x - planet1->position.x, star->position.y - planet1->position.y };
 	fPoint dist2 = { star->position.x - planet2->position.x, star->position.y - planet2->position.y };
+	fPoint dist3 = { object1->position.x - object2->position.x, object1->position.y - object2->position.y };
 
 	// Magnitude of the distances
 	float r1 = sqrt(dist1.x * dist1.x + dist1.y * dist1.y);
 	float r2 = sqrt(dist2.x * dist2.x + dist2.y * dist2.y);
+	float r3 = sqrt(dist3.x * dist3.x + dist3.y * dist3.y);
 
-	// Calculating the gravitational forces
-	fPoint force1 = { (G * starMass * planetMass) / (r1 * r1), (G * starMass * planetMass) / (r1 * r1) };
-	fPoint force2 = { (G * starMass * planetMass) / (r2 * r2), (G * starMass * planetMass) / (r2 * r2) };
+	// Calculating the gravitational forces Newton Law
+	fPoint force1 = NGUL(star->mass, planet1->mass, r1);
+	fPoint force2 = NGUL(star->mass, planet2->mass, r2);
+	fPoint force3 = NGUL(object1->mass, object2->mass, r3);
 
 	// Updating accelerations of planet1 and planet2 based on the forces
-	planet1->acceleration.x = force1.x / planetMass;
-	planet1->acceleration.y = force1.y / planetMass;
-	planet2->acceleration.x = force2.x / planetMass;
-	planet2->acceleration.y = force2.y / planetMass;
-
-	// ...
+	planet1->acceleration.x = force1.x / planet1->mass;
+	planet1->acceleration.y = force1.y / planet1->mass;
+	planet2->acceleration.x = force2.x / planet2->mass;
+	planet2->acceleration.y = force2.y / planet2->mass;
+	object1->acceleration.x = force3.x / object1->mass;
+	object1->acceleration.y = force3.y / object1->mass;
+	object2->acceleration.x = force3.x / object2->mass;
+	object2->acceleration.y = force3.y / object2->mass;
+	
 
 
 	//Calculate Frame Time:

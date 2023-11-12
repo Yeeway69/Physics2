@@ -7,7 +7,7 @@
 #include <list>
 using namespace std;
 
-
+const float G = 6.67430e-11f;
 typedef p2Point<float> fPoint;
 
 enum FRAMERATE_MODE
@@ -33,6 +33,11 @@ public:
     void UpdateWindowTitle();  // Add this line
 
     update_status PreUpdate(float deltaTime);  // Notice the float argument
+
+    fPoint NGUL(float m1, float m2, float r1)
+    {
+        return { (G * m1 * m2) / (r1 * r1), (G * m1 * m2) / (r1 * r1) };
+    }
 
 
     //for framrate control
@@ -73,6 +78,8 @@ private:
     Body* star = new Body();
     Body* planet1 = new Body();
     Body* planet2 = new Body();
+    Body* object1 = new Body();
+    Body* object2 = new Body();
     bool debug;
 
     // Apply a force to a body
