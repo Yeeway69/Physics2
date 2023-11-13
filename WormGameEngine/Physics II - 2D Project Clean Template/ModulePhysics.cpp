@@ -277,12 +277,7 @@ update_status ModulePhysics::PostUpdate()
 
 
 
-	// In the PostUpdate method:
-	for (list<Body*>::iterator it = bodies.begin(); it != bodies.end(); ++it)
-	{
-		Body* body = *it;
-		App->renderer->DrawCircle(body->position.x, body->position.y, 10, 255, 0, 0); // Drawing the cannonball
-	}
+	// In the PostUpdate method
 
 
 	if (App->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN)
