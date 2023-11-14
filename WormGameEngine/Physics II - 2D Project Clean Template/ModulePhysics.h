@@ -18,6 +18,14 @@ enum FRAMERATE_MODE
 };
 
 
+struct Body {
+    fPoint position;
+    fPoint velocity;
+    fPoint acceleration;
+    float mass;
+    float elasticity; // coefficient of restitution (bounce factor)
+    float friction; // coefficient of friction
+};
 
 class ModulePhysics : public Module
 {
@@ -58,19 +66,12 @@ private:
     float cannonAngle;  // Angle in degrees
     float cannonPower;  // Firing power
 
+    Body* player= new Body(); //player tehe mnn 
 
     float groundHeight; // Y coordinate of the ground
 
     float groundwidth; // X coordinate of the ground
 
-    struct Body {
-        fPoint position;
-        fPoint velocity;
-        fPoint acceleration;
-        float mass;
-        float elasticity; // coefficient of restitution (bounce factor)
-        float friction; // coefficient of friction
-    };
 
     list<Body*> bodies; // List of all physics bodies
 

@@ -28,7 +28,6 @@ ModulePhysics::ModulePhysics(Application* app, bool start_enabled) : Module(app,
 {
 	debug = true;
 	// Example: Initialize a player body (this is just for demonstration and can be adapted as needed)
-	Body* player = new Body();
 	player->position = { 100.0f, 100.0f }; // starting position
 	player->velocity = { 0.0f, 0.0f }; // starting velocity
 	player->acceleration = gravity; // affected by gravity
