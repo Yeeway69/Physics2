@@ -1,6 +1,7 @@
 #include "Globals.h"
 #include "Application.h"
 #include "ModuleRender.h"
+#include <cmath>
 
 ModuleRender::ModuleRender(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
@@ -153,6 +154,30 @@ bool ModuleRender::DrawQuad(const SDL_Rect& rect, Uint8 r, Uint8 g, Uint8 b, Uin
 
 	return ret;
 }
+
+//void ModuleRender::UpdateBall(Body& ball, double deltaTime)
+//{
+//	double radians = ball.bodyAngle * M_PI / 180.0;
+//	double xComponent = ball.velocity.x * std::cos(radians);
+//	double yComponent = ball.velocity.y * std::sin(radians) - gravity.y * deltaTime;
+//
+//	ball.position.x += xComponent * deltaTime;
+//	ball.position.y -= yComponent * deltaTime; // subtract because y-axis is inverted in SDL
+//	ball.velocity.x = std::sqrt(xComponent * xComponent + yComponent * yComponent);
+//}
+//
+//void ModuleRender::RenderTrajectory(const Body& ball, int numPoints)
+//{
+//	SDL_SetRenderDrawColor(renderer, 0, 0, 255, 255); // Blue color for trajectory
+//	const double deltaTime = 0.1; // Adjust the time step for trajectory rendering
+//
+//	for (int i = 0; i < numPoints; ++i) 
+//	{
+//		UpdateBall(ball, deltaTime);
+//		// Draw a point at the current position
+//		SDL_RenderDrawPoint(renderer, static_cast<int>(ball.position.x), static_cast<int>(ball.position.y));
+//	}
+//}
 
 bool ModuleRender::DrawLine(int x1, int y1, int x2, int y2, Uint8 r, Uint8 g, Uint8 b, Uint8 a, bool use_camera)
 {

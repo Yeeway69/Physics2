@@ -9,6 +9,7 @@ using namespace std;
 
 
 typedef p2Point<float> fPoint;
+const fPoint gravity = { 0.0f, 9.81f }; // gravitational acceleration (assuming Y is up)
 
 enum FRAMERATE_MODE
 {
@@ -17,6 +18,15 @@ enum FRAMERATE_MODE
     FRM_SEMI_FIXED
 };
 
+struct Body {
+    fPoint position;
+    fPoint velocity;
+    fPoint acceleration;
+    float bodyAngle;
+    float mass;
+    float elasticity; // coefficient of restitution (bounce factor)
+    float friction; // coefficient of friction
+};
 
 
 class ModulePhysics : public Module
@@ -58,18 +68,10 @@ private:
 
     float groundwidth; // X coordinate of the ground
 
-    struct Body {
-        fPoint position;
-        fPoint velocity;
-        fPoint acceleration;
-        float mass;
-        float elasticity; // coefficient of restitution (bounce factor)
-        float friction; // coefficient of friction
-    };
-
+    
     list<Body*> bodies; // List of all physics bodies
 
-    const fPoint gravity = { 0.0f, 9.81f }; // gravitational acceleration (assuming Y is up)
+    
 
     bool debug;
 

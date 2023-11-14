@@ -163,11 +163,11 @@ update_status ModulePhysics::PreUpdate()
 	// Hotkey to adjuct cannon ball shooting direction
 	if (App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT)
 	{
-		cannonAngle -= 1.0f;
+		cannonAngle += 1.0f;
 	}
 	if (App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
 	{
-		cannonAngle += 1.0f;
+		cannonAngle -= 1.0f;
 	}
 	if (App->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT)  // Adjust as needed based on your input handling
 	{
@@ -274,7 +274,7 @@ update_status ModulePhysics::PostUpdate()
 	int width, height;
 	App->window->GetWindowSize(width, height);
 	App->renderer->DrawLine(0, height - 290, width, height - 300, 255, 255, 255);
-
+	//App->renderer->RenderTrajectory(ball, int numPoints);
 
 
 	// In the PostUpdate method
