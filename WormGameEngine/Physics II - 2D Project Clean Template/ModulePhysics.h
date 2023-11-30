@@ -26,6 +26,7 @@ struct Body {
     float mass;
     float elasticity; // coefficient of restitution (bounce factor)
     float friction; // coefficient of friction
+    bool isCollidingWithWater = false; //A boolean that checks if the object is colliding with water
 };
 
 

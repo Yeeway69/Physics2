@@ -238,7 +238,7 @@ bool ModuleRender::DrawGrowingRectangle(int x, int y, float sizeFactor, Uint8 r,
 	SDL_SetRenderDrawColor(renderer, r, g, b, a);
 
 	int width = 50;  // Adjust the initial width as needed
-	int height = static_cast<int>(3 * sizeFactor); // Adjust the initial height as needed
+	int height = static_cast<int>(2 * sizeFactor); // Adjust the initial height as needed
 
 	SDL_Rect rect = { x - width / 2, y , width, -height };
 

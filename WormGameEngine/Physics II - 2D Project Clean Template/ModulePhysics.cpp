@@ -144,58 +144,74 @@ update_status ModulePhysics::PreUpdate()
 	int width, height;
 	App->window->GetWindowSize(width, height);
 
+	
+
+
+
 	// Iterate over each physics body and update
 	for (std::list<Body*>::iterator it = bodies.begin(); it != bodies.end(); ++it)
 	{
+		//This is for implementing the physics of the bodies 
 		Body* body = *it;
 		fPoint halfTimeVelocity;
-
-		// Switch integration schemes based on currentScheme
-		switch (currentScheme)
+		
+		//This is for implementing the hydrodynamics of the bodies 
+		if (body->isCollidingWithWater)
 		{
-		case EULER:
-			body->position.x += body->velocity.x * deltaTime;
-			body->position.y += body->velocity.y * deltaTime;
-			body->velocity.x += body->acceleration.x * deltaTime;
-			body->velocity.y += body->acceleration.y * deltaTime;
-			break;
+			//Here is the ecuation of hydrodynamics
 
-		case SYMPLECTIC_EULER:
-			body->velocity.x += body->acceleration.x * deltaTime;
-			body->velocity.y += body->acceleration.y * deltaTime;
-			body->position.x += body->velocity.x * deltaTime;
-			body->position.y += body->velocity.y * deltaTime;
-			break;
-
-		case VELOCITY_VERLET:
-			halfTimeVelocity.x = body->velocity.x + (0.5f * body->acceleration.x * deltaTime);
-			halfTimeVelocity.y = body->velocity.y + (0.5f * body->acceleration.y * deltaTime);
-			body->position.x += halfTimeVelocity.x * deltaTime;
-			body->position.y += halfTimeVelocity.y * deltaTime;
-			// Assuming new acceleration is computed based on forces later in the loop
-			body->velocity.x = halfTimeVelocity.x + (0.5f * body->acceleration.x * deltaTime);
-			body->velocity.y = halfTimeVelocity.y + (0.5f * body->acceleration.y * deltaTime);
-			break;
 		}
-
-		body->velocity += gravity * deltaTime;
-
-		// Check for collisions with the ground
-		if (body->position.y >= height - 300) // Assuming 10 is the radius of the cannonball
+		else
 		{
-			body->velocity.y = -body->elasticity * body->velocity.y; // Reflect and reduce vertical velocity
-			body->position.y = height - 300; // Reset position to be just on the ground
+			// Switch integration schemes based on currentScheme
+			switch (currentScheme)
+			{
+			case EULER:
+				body->position.x += body->velocity.x * deltaTime;
+				body->position.y += body->velocity.y * deltaTime;
+				body->velocity.x += body->acceleration.x * deltaTime;
+				body->velocity.y += body->acceleration.y * deltaTime;
+				break;
+
+			case SYMPLECTIC_EULER:
+				body->velocity.x += body->acceleration.x * deltaTime;
+				body->velocity.y += body->acceleration.y * deltaTime;
+				body->position.x += body->velocity.x * deltaTime;
+				body->position.y += body->velocity.y * deltaTime;
+				break;
+
+			case VELOCITY_VERLET:
+				halfTimeVelocity.x = body->velocity.x + (0.5f * body->acceleration.x * deltaTime);
+				halfTimeVelocity.y = body->velocity.y + (0.5f * body->acceleration.y * deltaTime);
+				body->position.x += halfTimeVelocity.x * deltaTime;
+				body->position.y += halfTimeVelocity.y * deltaTime;
+				// Assuming new acceleration is computed based on forces later in the loop
+				body->velocity.x = halfTimeVelocity.x + (0.5f * body->acceleration.x * deltaTime);
+				body->velocity.y = halfTimeVelocity.y + (0.5f * body->acceleration.y * deltaTime);
+				break;
+			}
+
+
+			body->velocity += gravity * deltaTime;
+
+			// Check for collisions with the ground
+			if (body->position.y >= height - 300) // Assuming 10 is the radius of the cannonball
+			{
+				body->velocity.y = -body->elasticity * body->velocity.y; // Reflect and reduce vertical velocity
+				body->position.y = height - 300; // Reset position to be just on the ground
+			}
+			//Friction
+			if (body->position.y >= height - 10)
+			{
+				body->velocity.x *= (1 - body->friction); // Apply friction to horizontal velocity
+			}
+			//Limiting Bounces:
+			if (abs(body->velocity.y) < 0.1f)
+			{
+				body->velocity.y = 0.0f;
+			}
 		}
-		//Friction
-		if (body->position.y >= height - 10)
-		{
-			body->velocity.x *= (1 - body->friction); // Apply friction to horizontal velocity
-		}
-		//Limiting Bounces:
-		if (abs(body->velocity.y) < 0.1f)
-		{
-			body->velocity.y = 0.0f;
-		}
+		
 
 	}
 
@@ -207,16 +223,16 @@ update_status ModulePhysics::PreUpdate()
 
 update_status ModulePhysics::PostUpdate()
 {
-
+	// In the PostUpdate method
+	// 
 	//draw the ground with a line
 	int width, height;
 	App->window->GetWindowSize(width, height);
 	App->renderer->DrawLine(0, height - 290, width, height - 300, 255, 255, 255);
 	
-	
 
 
-	// In the PostUpdate method
+
 
 
 	if (App->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN)

@@ -54,7 +54,7 @@ update_status ModulePlayer::Update()
 	{
 		cannonAngle -= 1.0f;
 	}
-	if (App->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT && cannonPower<100)  // Adjust as needed based on your input handling
+	if (App->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT && cannonPower<150)  // Adjust as needed based on your input handling
 	{
 		cannonPower += 0.5f;
 	}
