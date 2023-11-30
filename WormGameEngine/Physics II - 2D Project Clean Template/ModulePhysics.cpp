@@ -150,52 +150,64 @@ update_status ModulePhysics::PreUpdate()
 		Body* body = *it;
 		fPoint halfTimeVelocity;
 
-		// Switch integration schemes based on currentScheme
-		switch (currentScheme)
+
+		//This is for implementing the hydrodynamics of the bodies 
+		if (body->isCollidingWithWater)
 		{
-		case EULER:
-			body->position.x += body->velocity.x * deltaTime;
-			body->position.y += body->velocity.y * deltaTime;
-			body->velocity.x += body->acceleration.x * deltaTime;
-			body->velocity.y += body->acceleration.y * deltaTime;
-			break;
+			//Here is the ecuation of hydrodynamics
 
-		case SYMPLECTIC_EULER:
-			body->velocity.x += body->acceleration.x * deltaTime;
-			body->velocity.y += body->acceleration.y * deltaTime;
-			body->position.x += body->velocity.x * deltaTime;
-			body->position.y += body->velocity.y * deltaTime;
-			break;
+		}
+		else
+		{
 
-		case VELOCITY_VERLET:
-			halfTimeVelocity.x = body->velocity.x + (0.5f * body->acceleration.x * deltaTime);
-			halfTimeVelocity.y = body->velocity.y + (0.5f * body->acceleration.y * deltaTime);
-			body->position.x += halfTimeVelocity.x * deltaTime;
-			body->position.y += halfTimeVelocity.y * deltaTime;
-			// Assuming new acceleration is computed based on forces later in the loop
-			body->velocity.x = halfTimeVelocity.x + (0.5f * body->acceleration.x * deltaTime);
-			body->velocity.y = halfTimeVelocity.y + (0.5f * body->acceleration.y * deltaTime);
-			break;
+			// Switch integration schemes based on currentScheme
+			switch (currentScheme)
+			{
+			case EULER:
+				body->position.x += body->velocity.x * deltaTime;
+				body->position.y += body->velocity.y * deltaTime;
+				body->velocity.x += body->acceleration.x * deltaTime;
+				body->velocity.y += body->acceleration.y * deltaTime;
+				break;
+
+			case SYMPLECTIC_EULER:
+				body->velocity.x += body->acceleration.x * deltaTime;
+				body->velocity.y += body->acceleration.y * deltaTime;
+				body->position.x += body->velocity.x * deltaTime;
+				body->position.y += body->velocity.y * deltaTime;
+				break;
+
+			case VELOCITY_VERLET:
+				halfTimeVelocity.x = body->velocity.x + (0.5f * body->acceleration.x * deltaTime);
+				halfTimeVelocity.y = body->velocity.y + (0.5f * body->acceleration.y * deltaTime);
+				body->position.x += halfTimeVelocity.x * deltaTime;
+				body->position.y += halfTimeVelocity.y * deltaTime;
+				// Assuming new acceleration is computed based on forces later in the loop
+				body->velocity.x = halfTimeVelocity.x + (0.5f * body->acceleration.x * deltaTime);
+				body->velocity.y = halfTimeVelocity.y + (0.5f * body->acceleration.y * deltaTime);
+				break;
+			}
+
+			body->velocity += gravity * deltaTime;
+
+			// Check for collisions with the ground
+			if (body->position.y >= height - 300) // Assuming 10 is the radius of the cannonball
+			{
+				body->velocity.y = -body->elasticity * body->velocity.y; // Reflect and reduce vertical velocity
+				body->position.y = height - 300; // Reset position to be just on the ground
+			}
+			//Friction
+			if (body->position.y >= height - 10)
+			{
+				body->velocity.x *= (1 - body->friction); // Apply friction to horizontal velocity
+			}
+			//Limiting Bounces:
+			if (abs(body->velocity.y) < 0.1f)
+			{
+				body->velocity.y = 0.0f;
+			}
 		}
 
-		body->velocity += gravity * deltaTime;
-
-		// Check for collisions with the ground
-		if (body->position.y >= height - 300) // Assuming 10 is the radius of the cannonball
-		{
-			body->velocity.y = -body->elasticity * body->velocity.y; // Reflect and reduce vertical velocity
-			body->position.y = height - 300; // Reset position to be just on the ground
-		}
-		//Friction
-		if (body->position.y >= height - 10)
-		{
-			body->velocity.x *= (1 - body->friction); // Apply friction to horizontal velocity
-		}
-		//Limiting Bounces:
-		if (abs(body->velocity.y) < 0.1f)
-		{
-			body->velocity.y = 0.0f;
-		}
 
 	}
 
