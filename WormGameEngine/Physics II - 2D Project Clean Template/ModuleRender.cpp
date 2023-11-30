@@ -230,3 +230,25 @@ bool ModuleRender::DrawCircle(int x, int y, int radius, Uint8 r, Uint8 g, Uint8 
 
 	return ret;
 }
+bool ModuleRender::DrawGrowingRectangle(int x, int y, float sizeFactor, Uint8 r, Uint8 g, Uint8 b, Uint8 a, bool use_camera)
+{
+	bool ret = true;
+
+	SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
+	SDL_SetRenderDrawColor(renderer, r, g, b, a);
+
+	int width = 50;  // Adjust the initial width as needed
+	int height = static_cast<int>(3 * sizeFactor); // Adjust the initial height as needed
+
+	SDL_Rect rect = { x - width / 2, y , width, -height };
+
+	int result = SDL_RenderDrawRect(renderer, &rect);
+
+	if (result != 0)
+	{
+		LOG("Cannot draw rectangle to screen. SDL_RenderDrawRect error: %s", SDL_GetError());
+		ret = false;
+	}
+
+	return ret;
+}

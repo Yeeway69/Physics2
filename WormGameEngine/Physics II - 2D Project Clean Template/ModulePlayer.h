@@ -1,17 +1,13 @@
 #pragma once
 #include "Module.h"
 #include "Animation.h"
+#include "ModulePhysics.h"
 #include "Globals.h"
 #include "p2Point.h"
+#include "SDL/include/SDL.h"
+#include <list>
+using namespace std;
 
-struct Object
-{
-	SDL_Texture* graphic;
-	uint fx;
-
-	Object() : graphic(NULL)
-	{}
-};
 
 class ModulePlayer : public Module
 {
@@ -21,8 +17,19 @@ public:
 
 	bool Start();
 	update_status Update();
+	update_status PostUpdate();
 	bool CleanUp();
 
-public:
 
+public:
+	float cannonAngle;  // Angle in degrees
+	float cannonPower = 6;  // Firing power
+
+private:
+	Body* player = new Body();
+	Application* app;
+	
+	int frameCounter = 0;
+	int frameCooldown = 50;
+	bool hasShot = false;
 };

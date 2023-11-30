@@ -27,24 +27,10 @@ using namespace std;
 ModulePhysics::ModulePhysics(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
 	debug = true;
-	// Example: Initialize a player body (this is just for demonstration and can be adapted as needed)
-	Body* player = new Body();
-	player->position = { 100.0f, 100.0f }; // starting position
-	player->velocity = { 0.0f, 0.0f }; // starting velocity
-	player->acceleration = gravity; // affected by gravity
-	player->mass = 1.0f; // arbitrary mass
-	player->elasticity = 0.5f; // some bounce
-	player->friction = 0.1f; // some friction
-	bodies.push_back(player);
-
 	// Example: Initialize a platform body (this is just for demonstration and can be adapted as needed)
 	int width, height;
 	App->window->GetWindowSize(width, height);
 	groundHeight = height / 2.0f; // Initialize ground halfway up the window
-
-	//firing
-	cannonAngle = 45.0f;  // Default to 45 degrees
-	cannonPower = 60.0f;   // Default power
 }
 
 // Destructor
@@ -63,6 +49,7 @@ void ModulePhysics::ApplyForce(Body& body, const fPoint& force)
 	fPoint acceleration = { force.x / body.mass, force.y / body.mass };
 	body.velocity += acceleration;
 }
+
 
 void ModulePhysics::UpdateWindowTitle()
 {
@@ -99,10 +86,6 @@ void ModulePhysics::UpdateWindowTitle()
 
 update_status ModulePhysics::PreUpdate()
 {
-
-	
-
-
 	//Calculate Frame Time:
 	currentFrameTime = SDL_GetTicks() / 1000.0f; // Convert milliseconds to seconds
 	float deltaTime = currentFrameTime - lastFrameTime;
@@ -116,93 +99,50 @@ update_status ModulePhysics::PreUpdate()
 	//Implement Framerate Control Logic:
 	switch (currentMode)
 	{
-	case FRM_FIXED:
-	{
-		float frameDelay = targetFrameTime * 1000.0f - deltaTime * 1000.0f; // Convert to milliseconds
-		if (frameDelay > 0)
-			SDL_Delay((Uint32)frameDelay);
-		
-		// Update debug stats
-		currentFPS = 1.0f / targetFrameTime;
-		currentFrameTime = targetFrameTime;
-		break;
-	}
-	
-	case FRM_VARIABLE:
-	{
-		// No artificial delay, simply compute the debug stats
-		currentFPS = 1.0f / deltaTime;
-		currentFrameTime = deltaTime;
-		break;
-	}
-	
-	case FRM_SEMI_FIXED:
-	{
-		// Physics and logic calculations at a fixed rate, rendering as fast as possible
-		if (deltaTime < fixedFrameTime)
+		case FRM_FIXED:
 		{
-			// If not enough time has passed for the next fixed update, delay
-			float frameDelay = fixedFrameTime * 1000.0f - deltaTime * 1000.0f; // Convert to milliseconds
-			SDL_Delay((Uint32)frameDelay);
+			float frameDelay = targetFrameTime * 1000.0f - deltaTime * 1000.0f; // Convert to milliseconds
+			if (frameDelay > 0)
+				SDL_Delay((Uint32)frameDelay);
+		
+			// Update debug stats
+			currentFPS = 1.0f / targetFrameTime;
+			currentFrameTime = targetFrameTime;
+			break;
 		}
-
-		// For simplicity, in this example, we're only doing the fixed update.
-		// In a real-world scenario, you'd run the rendering logic as fast as possible here.
-
-		// Update debug stats
-		currentFPS = 1.0f / fixedFrameTime;
-		currentFrameTime = fixedFrameTime;
-		break;
-	}
-	    
 	
-    }
+		case FRM_VARIABLE:
+		{
+			// No artificial delay, simply compute the debug stats
+			currentFPS = 1.0f / deltaTime;
+			currentFrameTime = deltaTime;
+			break;
+		}
+	
+		case FRM_SEMI_FIXED:
+		{
+			// Physics and logic calculations at a fixed rate, rendering as fast as possible
+			if (deltaTime < fixedFrameTime)
+			{
+				// If not enough time has passed for the next fixed update, delay
+				float frameDelay = fixedFrameTime * 1000.0f - deltaTime * 1000.0f; // Convert to milliseconds
+				SDL_Delay((Uint32)frameDelay);
+			}
 
+			// For simplicity, in this example, we're only doing the fixed update.
+			// In a real-world scenario, you'd run the rendering logic as fast as possible here.
 
-
-	// Hotkey to adjuct cannon ball shooting direction
-	if (App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT)
-	{
-		cannonAngle += 1.0f;
-	}
-	if (App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
-	{
-		cannonAngle -= 1.0f;
-	}
-	if (App->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT)  // Adjust as needed based on your input handling
-	{
-		cannonPower += 0.1f;
-	}
-	if (App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT)  // Adjust as needed based on your input handling
-	{
-		cannonPower -= 0.1f;
+			// Update debug stats
+			currentFPS = 1.0f / fixedFrameTime;
+			currentFrameTime = fixedFrameTime;
+			break;
+		}
 	}
 
 
 	// Cannon Representation
 	int width, height;
 	App->window->GetWindowSize(width, height);
-	const fPoint cannonPosition = { 150, (float)height - 350 };
-
-
-	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN) // Listen for SPACEBAR press
-	{
-		Body* cannonball = new Body();
-		cannonball->position = cannonPosition;
-		cannonball->velocity = { -2.0f, -4.0f }; // Initial velocity (adjust as needed)
-		cannonball->acceleration = gravity; // Affected by gravity
-		cannonball->mass = 1.0f; // Arbitrary mass
-		cannonball->elasticity = 0.5f; // Some bounce
-		cannonball->friction = 0.1f; // Some friction
-		bodies.push_back(cannonball);
-
-		float radianAngle = DEGTORAD(cannonAngle);  // Convert angle  to radians
-		cannonball->velocity.x = cannonPower * cosf(radianAngle);
-		cannonball->velocity.y = -cannonPower * sinf(radianAngle);  // Negative because y is up
-
-	}
-
-	//float deltaTime = 0.016f; // Assuming 60 FPS for now
 
 	// Iterate over each physics body and update
 	for (std::list<Body*>::iterator it = bodies.begin(); it != bodies.end(); ++it)
@@ -262,8 +202,6 @@ update_status ModulePhysics::PreUpdate()
 	
 	lastFrameTime = currentFrameTime;
 
-
-
 	return UPDATE_CONTINUE;
 }
 
@@ -274,7 +212,8 @@ update_status ModulePhysics::PostUpdate()
 	int width, height;
 	App->window->GetWindowSize(width, height);
 	App->renderer->DrawLine(0, height - 290, width, height - 300, 255, 255, 255);
-	//App->renderer->RenderTrajectory(ball, int numPoints);
+	
+	
 
 
 	// In the PostUpdate method
@@ -324,9 +263,6 @@ update_status ModulePhysics::PostUpdate()
 		targetFrameTime = 1.0f / targetFPS;
 		UpdateWindowTitle();
 	}
-
-	
-
 
 	if (debug)
 	{

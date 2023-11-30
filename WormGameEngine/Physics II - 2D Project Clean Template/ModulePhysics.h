@@ -44,7 +44,7 @@ public:
 
     update_status PreUpdate(float deltaTime);  // Notice the float argument
 
-
+public:
     //for framrate control
     FRAMERATE_MODE currentMode = FRM_FIXED; // Default mode
     const float fixedFrameTime = 1.0f / 60.0f; // for 60 FPS
@@ -55,7 +55,8 @@ public:
     int targetFPS = 60;  // Default target FPS
     float targetFrameTime = fixedFrameTime;
     int currentFPS = 0;  // This will be updated during runtime
-    
+    Body* player = new Body();
+    list<Body*> bodies; // List of all physics bodies
 
 private:
 
@@ -67,11 +68,6 @@ private:
     float groundHeight; // Y coordinate of the ground
 
     float groundwidth; // X coordinate of the ground
-
-    
-    list<Body*> bodies; // List of all physics bodies
-
-    
 
     bool debug;
 
