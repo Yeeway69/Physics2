@@ -104,7 +104,7 @@ update_status ModulePlayer::Update()
 	}
 
 
-	App->renderer->DrawGrowingRectangle(SCREEN_WIDTH /2, SCREEN_HEIGHT/2, cannonPower, 255, 255, 255,255, true);
+	App->renderer->DrawGrowingRectangle(SCREEN_WIDTH*0.9f, SCREEN_HEIGHT/2, cannonPower, 255, 255, 255,255, true);
 
 
 
