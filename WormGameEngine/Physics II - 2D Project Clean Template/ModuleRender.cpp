@@ -72,6 +72,10 @@ update_status ModuleRender::PostUpdate()
 {
 	SDL_RenderPresent(renderer);
 
+	// Clear the renderer at the start of each frame
+	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255); // Set the color to black
+	SDL_RenderClear(renderer); // Clear the screen
+
 	// Render platforms
 	const std::list<Platform>& platforms = App->physics->GetPlatforms();
 	for (const Platform& platform : platforms) {
