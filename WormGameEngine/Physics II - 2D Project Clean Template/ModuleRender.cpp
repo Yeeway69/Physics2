@@ -252,3 +252,15 @@ bool ModuleRender::DrawGrowingRectangle(int x, int y, float sizeFactor, Uint8 r,
 
 	return ret;
 }
+
+void ModuleRender::drawPotentialFlow(int counter)
+{
+	for (int x = 0; x < SCREEN_WIDTH; x += 10)
+	{
+		float phiScale = counter * cos(x * 0.05);  // Adjust the potential function
+		int y = SCREEN_HEIGHT / 2 + static_cast<int>(phiScale);
+		DrawCircle(x, y, 10, 255, 0, 0);
+	}
+
+
+}

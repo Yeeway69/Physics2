@@ -26,6 +26,7 @@ using namespace std;
 
 ModulePhysics::ModulePhysics(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
+	this->app = app;
 	debug = true;
 	// Example: Initialize a platform body (this is just for demonstration and can be adapted as needed)
 	int width, height;
@@ -149,12 +150,20 @@ update_status ModulePhysics::PreUpdate()
 	{
 		Body* body = *it;
 		fPoint halfTimeVelocity;
-
+		if (body->position.x > 400 && body->position.x < 600) {
+			body->isCollidingWithWater = true;
+		}
 
 		//This is for implementing the hydrodynamics of the bodies 
 		if (body->isCollidingWithWater)
 		{
-			//Here is the ecuation of hydrodynamics
+			counterForWater = (body->mass*body->acceleration.y)*5;
+			for (int x = 0; x < SCREEN_WIDTH; x += 10)
+			{
+				float phi = counterForWater * cos(x * 0.05f);  // Adjust the potential function
+				int y = SCREEN_HEIGHT / 2 + static_cast<int>(phi);
+				counterForWater-= 0.01;
+			}
 
 		}
 		else
@@ -281,6 +290,11 @@ update_status ModulePhysics::PostUpdate()
 		for (list<Body*>::iterator it = bodies.begin(); it != bodies.end(); ++it)
 		{
 			Body* body = *it;
+			if (body->isCollidingWithWater)
+			{
+				//Here is the ecuation of hydrodynamics
+
+			}
 			App->renderer->DrawCircle(body->position.x, body->position.y, 10, 255, 0, 0);
 		}
 	}

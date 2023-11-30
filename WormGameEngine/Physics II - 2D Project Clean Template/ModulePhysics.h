@@ -59,6 +59,9 @@ public:
     Body* player = new Body();
     list<Body*> bodies; // List of all physics bodies
 
+    Application* app;
+    int counterForWater;
+
 private:
 
     //angle in radians
