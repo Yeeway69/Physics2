@@ -43,7 +43,7 @@ bool ModulePhysics::Start()
 	LOG("Creating Physics 2D environment");
 
 	// Example of adding platforms
-	platforms.push_back(Platform(fPoint(600, 300), 200, 30)); // Position (100, 300), Width 200, Height 30
+	platforms.push_back(Platform(fPoint(300, 300), 200, 30)); // Position (100, 300), Width 200, Height 30
 	platforms.push_back(Platform(fPoint(800, 100), 150, 30)); // Another platform
 	return true;
 }
@@ -104,6 +104,16 @@ update_status ModulePhysics::PreUpdate()
 		for (Body* body : bodies) {
 			if (platform.checkCollision(*body)) {
 				platform.applyDamage(5);
+			}
+		}
+	}
+
+	// Handle collisions and physics for each body
+	for (Body* body : bodies) {
+		for (Platform& platform : platforms) {
+			if (platform.checkCollision(*body)) {
+				// The collision response is handled within the checkCollision method
+				// Additional logic after collision (if necessary)
 			}
 		}
 	}

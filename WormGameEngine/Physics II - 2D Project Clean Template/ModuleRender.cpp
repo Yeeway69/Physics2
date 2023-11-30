@@ -91,16 +91,16 @@ update_status ModuleRender::PostUpdate()
         }
     }
 
-	//// Debug: Render platform positions
-	//for (const Platform& platform : App->physics->GetPlatforms()) {
-	//	SDL_Rect rect = { static_cast<int>(platform.position.x), static_cast<int>(platform.position.y),
-	//					  static_cast<int>(platform.width), static_cast<int>(platform.height) };
-	//	SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255); // Red color
-	//	SDL_RenderDrawRect(renderer, &rect); // Draw the rectangle
-	//}
+	// Debug: Render platform positions
+	for (const Platform& platform : App->physics->GetPlatforms()) {
+		SDL_Rect rect = { static_cast<int>(platform.position.x), static_cast<int>(platform.position.y),
+						  static_cast<int>(platform.width), static_cast<int>(platform.height) };
+		SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255); // Red color
+		SDL_RenderDrawRect(renderer, &rect); // Draw the rectangle
+	}
 
 	
-	SDL_RenderPresent(renderer);
+	
 	return UPDATE_CONTINUE;
 
 

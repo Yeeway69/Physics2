@@ -1,8 +1,10 @@
 #pragma once
+#include <algorithm>
 #include "Module.h"
 #include "Globals.h"
 #include "p2Point.h"
 #include "SDL/include/SDL.h"
+
 //include c++ standard libraries here
 #include <list>
 using namespace std;
@@ -31,7 +33,10 @@ struct Body {
     float width; // Width of the platform
     float height; // Height of the platform
 
+
 };
+
+
 
 struct Platform {
     fPoint position;
@@ -41,26 +46,42 @@ struct Platform {
     Platform(fPoint pos, float w, float h) : position(pos), width(w), height(h), health(100) {}
 
     // Add collision checking method if needed
-    bool checkCollision(const Body& ball) {
-        // Assuming ball.position is the center of the ball and ball.radius is its radius
-        // Calculate the AABB of the ball
-        float ballLeft = ball.position.x;
-        float ballRight = ball.position.x + ball.width;
-        float ballTop = ball.position.y;
-        float ballBottom = ball.position.y + ball.height;
+    bool Platform::checkCollision(Body& ball) {
+        float ballRadius = 10.0f; // The radius of the ball
 
-        // Calculate the AABB of the platform
-        float platformLeft = position.x;
-        float platformRight = position.x + width;
-        float platformTop = position.y;
-        float platformBottom = position.y + height;
+        // Inside your Platform::checkCollision method
 
-        // Check if the AABBs overlap
-        bool collision = ballRight >= platformLeft && ballLeft <= platformRight &&
-            ballBottom >= platformTop && ballTop <= platformBottom;
+        float closestX = (ball.position.x < position.x) ? position.x :
+            (ball.position.x > position.x + width) ? position.x + width :
+            ball.position.x;
 
-        return collision;
+        float closestY = (ball.position.y < position.y) ? position.y :
+            (ball.position.y > position.y + height) ? position.y + height :
+            ball.position.y;
+
+
+        // Calculate the distance between the ball's center and this closest point
+        float distanceX = ball.position.x - closestX;
+        float distanceY = ball.position.y - closestY;
+
+        // If the distance is less than the ball's radius, we have a collision
+        if ((distanceX * distanceX + distanceY * distanceY) < (ballRadius * ballRadius)) {
+            // Collision detected, now determine the response
+            if (std::abs(distanceX) > std::abs(distanceY)) {
+                // Horizontal collision, reverse X velocity
+                ball.velocity.x *= -1;
+            }
+            else {
+                // Vertical collision, reverse Y velocity
+                ball.velocity.y *= -1;
+            }
+
+            return true;
+        }
+
+        return false;
     }
+
 
     void applyDamage(int damage) {
         health -= damage;
