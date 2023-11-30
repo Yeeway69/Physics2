@@ -71,7 +71,20 @@ update_status ModuleRender::Update()
 update_status ModuleRender::PostUpdate()
 {
 	SDL_RenderPresent(renderer);
+
+	// Render platforms
+	const std::list<Platform>& platforms = App->physics->GetPlatforms();
+	for (const Platform& platform : platforms) {
+		if (platform.health > 0) {
+			// Draw platform using DrawQuad
+			SDL_Rect rect = { static_cast<int>(platform.position.x), static_cast<int>(platform.position.y),
+							  static_cast<int>(platform.width), static_cast<int>(platform.height) };
+			DrawQuad(rect, 255, 0, 0, 255); // Red color for platforms
+		}
+	}
 	return UPDATE_CONTINUE;
+
+
 }
 
 // Called before quitting

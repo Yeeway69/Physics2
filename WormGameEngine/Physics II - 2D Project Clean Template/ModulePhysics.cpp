@@ -95,6 +95,14 @@ update_status ModulePhysics::PreUpdate()
     #undef min
 	deltaTime = std::min(deltaTime, maxDeltaTime);
 
+	// Update platforms
+	for (Platform& platform : platforms) {
+		for (Body* body : bodies) {
+			if (platform.checkCollision(*body)) {
+				platform.applyDamage(5);
+			}
+		}
+	}
 
 	//Implement Framerate Control Logic:
 	switch (currentMode)

@@ -27,6 +27,47 @@ struct Body {
     float elasticity; // coefficient of restitution (bounce factor)
     float friction; // coefficient of friction
     bool isCollidingWithWater = false; //A boolean that checks if the object is colliding with water
+    float radius; // Radius of the ball
+    float width; // Width of the platform
+    float height; // Height of the platform
+
+};
+
+struct Platform {
+    fPoint position;
+    float width, height;
+    int health;
+
+    Platform(fPoint pos, float w, float h) : position(pos), width(w), height(h), health(100) {}
+
+    // Add collision checking method if needed
+    bool checkCollision(const Body& ball) {
+        // Assuming ball.position is the center of the ball and ball.radius is its radius
+        // Calculate the AABB of the ball
+        float ballLeft = ball.position.x;
+        float ballRight = ball.position.x + ball.width;
+        float ballTop = ball.position.y;
+        float ballBottom = ball.position.y + ball.height;
+
+        // Calculate the AABB of the platform
+        float platformLeft = position.x;
+        float platformRight = position.x + width;
+        float platformTop = position.y;
+        float platformBottom = position.y + height;
+
+        // Check if the AABBs overlap
+        bool collision = ballRight >= platformLeft && ballLeft <= platformRight &&
+            ballBottom >= platformTop && ballTop <= platformBottom;
+
+        return collision;
+    }
+
+    void applyDamage(int damage) {
+        health -= damage;
+        if (health <= 0) {
+            // Handle destruction
+        }
+    }
 };
 
 
@@ -59,6 +100,10 @@ public:
     Body* player = new Body();
     list<Body*> bodies; // List of all physics bodies
 
+    const std::list<Platform>& GetPlatforms() const {
+        return platforms;
+    }
+
 private:
 
     //angle in radians
@@ -71,6 +116,8 @@ private:
     float groundwidth; // X coordinate of the ground
 
     bool debug;
+
+    std::list<Platform> platforms; // List of all platforms
 
     // Apply a force to a body
     void ApplyForce(Body& body, const fPoint& force);
