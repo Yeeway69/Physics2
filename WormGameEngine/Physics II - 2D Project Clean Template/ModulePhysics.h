@@ -43,7 +43,7 @@ struct Platform {
     float width, height;
     int health;
 
-    Platform(fPoint pos, float w, float h) : position(pos), width(w), height(h), health(100) {}
+    Platform(fPoint pos, float w, float h) : position(pos), width(w), height(h), health(10) {}
 
     // Add collision checking method if needed
     bool Platform::checkCollision(Body& ball) {
