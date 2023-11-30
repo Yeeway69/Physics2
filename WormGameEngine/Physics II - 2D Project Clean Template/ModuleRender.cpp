@@ -76,25 +76,22 @@ update_status ModuleRender::PostUpdate()
 	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255); // Set the color to black
 	SDL_RenderClear(renderer); // Clear the screen
 
+	
+
+
+	
+	
 	// Render platforms
 	const std::list<Platform>& platforms = App->physics->GetPlatforms();
-	for (const Platform& platform : platforms) {
-		if (platform.health > 0) {
-			// Draw platform using DrawQuad
-			SDL_Rect rect = { static_cast<int>(platform.position.x), static_cast<int>(platform.position.y),
-							  static_cast<int>(platform.width), static_cast<int>(platform.height) };
-			DrawQuad(rect, 255, 0, 0, 255); // Red color for platforms
-		}
-	}
+    for (const Platform& platform : platforms) {
+        if (platform.health > 0) {
+            SDL_Rect rect = { static_cast<int>(platform.position.x), static_cast<int>(platform.position.y),
+                              static_cast<int>(platform.width), static_cast<int>(platform.height) };
+            DrawQuad(rect, 255, 0, 0, 255); // Red color for platforms
+        }
+    }
 
-	// Debug: Render platform positions
-	for (const Platform& platform : App->physics->GetPlatforms()) {
-		SDL_Rect rect = { static_cast<int>(platform.position.x), static_cast<int>(platform.position.y),
-						  static_cast<int>(platform.width), static_cast<int>(platform.height) };
-		SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255); // Red color
-		SDL_RenderDrawRect(renderer, &rect); // Draw the rectangle
-	}
-
+	
 	SDL_RenderPresent(renderer);
 	return UPDATE_CONTINUE;
 
