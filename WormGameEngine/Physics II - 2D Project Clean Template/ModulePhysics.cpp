@@ -41,6 +41,10 @@ ModulePhysics::~ModulePhysics()
 bool ModulePhysics::Start()
 {
 	LOG("Creating Physics 2D environment");
+
+	// Example of adding platforms
+	platforms.push_back(Platform(fPoint(100, 300), 200, 30)); // Position (100, 300), Width 200, Height 30
+	platforms.push_back(Platform(fPoint(400, 500), 150, 20)); // Another platform
 	return true;
 }
 
