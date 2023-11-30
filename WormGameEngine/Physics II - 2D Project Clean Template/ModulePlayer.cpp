@@ -19,7 +19,7 @@ ModulePlayer::~ModulePlayer()
 bool ModulePlayer::Start()
 {
 	// Example: Initialize a player body (this is just for demonstration and can be adapted as needed)
-	player->position = { 100.0f, 100.0f }; // starting position
+	player->position = { 200.0f, SCREEN_HEIGHT - 300 }; // starting position
 	player->velocity = { 0.0f, 0.0f }; // starting velocity
 	player->acceleration = gravity; // affected by gravity
 	player->mass = 1.0f; // arbitrary mass
@@ -63,7 +63,6 @@ update_status ModulePlayer::Update()
 		cannonPower -= 0.5f;
 	}
 
-
 	const fPoint cannonPosition = { player->position.x, player->position.y - 10 };
 
 
@@ -103,8 +102,8 @@ update_status ModulePlayer::Update()
 		App->renderer->DrawLine(endX, endY, player->position.x, player->position.y, 255, 255, 255);
 	}
 
-
-	App->renderer->DrawGrowingRectangle(SCREEN_WIDTH*0.9f, SCREEN_HEIGHT/2, cannonPower, 255, 255, 255,255, true);
+	//This is the power var 
+	App->renderer->DrawGrowingRectangle(SCREEN_WIDTH*0.05f, SCREEN_HEIGHT/2, cannonPower, 255, 255, 255,255, true);
 
 
 
