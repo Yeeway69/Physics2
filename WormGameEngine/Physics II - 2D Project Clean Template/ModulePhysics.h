@@ -27,6 +27,7 @@ struct Body {
     float elasticity; // coefficient of restitution (bounce factor)
     float friction; // coefficient of friction
     bool isCollidingWithWater;
+    int counterForWatter = 0;
 };
 
 

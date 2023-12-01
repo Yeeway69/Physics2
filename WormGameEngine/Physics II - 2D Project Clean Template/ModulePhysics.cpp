@@ -150,21 +150,32 @@ update_status ModulePhysics::PreUpdate()
 	{
 		Body* body = *it;
 		fPoint halfTimeVelocity;
-		if (body->position.x > 400 && body->position.x < 600) {
+		if (body->position.x > 400 && body->position.x < 500) {
 			body->isCollidingWithWater = true;
+		}
+		else
+		{
+			body->isCollidingWithWater = false;
 		}
 
 		//This is for implementing the hydrodynamics of the bodies 
 		if (body->isCollidingWithWater)
 		{
-			counterForWater = (body->mass*body->acceleration.y)*5;
-			for (int x = 0; x < SCREEN_WIDTH; x += 10)
-			{
-				float phi = counterForWater * cos(x * 0.05f);  // Adjust the potential function
-				int y = SCREEN_HEIGHT / 2 + static_cast<int>(phi);
-				counterForWater-= 0.01;
+			int tempCounterWatter = (body->mass * body->acceleration.y) * 5;
+			if (body->counterForWatter==0) {
+				counterForWater = (body->mass * body->acceleration.y);
 			}
-
+			float phi = counterForWater * cos(body->counterForWatter * 0.05f);  // Adjust the potential function
+			int y =  static_cast<int>(phi);
+			body->position.y += y;
+			body->position.x += body->velocity.x * deltaTime;
+			body->velocity.x += body->acceleration.x * deltaTime;
+			if(counterForWater > -body->mass * body->acceleration.y)
+			{
+				counterForWater -= 1;
+			}
+			
+			body->counterForWatter+=1;
 		}
 		else
 		{
