@@ -43,7 +43,7 @@ bool ModulePhysics::Start()
 	LOG("Creating Physics 2D environment");
 
 	// Example of adding platforms
-	platforms.push_back(Platform(fPoint(300, 300), 180, 20, true)); // Position (100, 300), Width 200, Height 30, is a water platform true
+	platforms.push_back(Platform(fPoint(300, 400), 180, 70, true)); // Position (100, 300), Width 200, Height 30, is a water platform true
 	platforms.push_back(Platform(fPoint(800, 100), 150, 20, false)); // Another platform
 	platforms.push_back(Platform(fPoint(500, 300), 100, 20, false)); // Another platform
 	platforms.push_back(Platform(fPoint(100, 100), 100, 20, false)); // Another platform
@@ -52,6 +52,9 @@ bool ModulePhysics::Start()
 	platforms.push_back(Platform(fPoint(700, 400), 100, 20, false)); // Another platform
 	platforms.push_back(Platform(fPoint(200, 250), 100, 20, false)); // Another platform
 	platforms.push_back(Platform(fPoint(600, 150), 100, 20, false)); // Another platform
+	//platforms.push_back(Platform(fPoint(300, 300), 25, 200, 999, false)); // Another platform indestructible
+	//platforms.push_back(Platform(fPoint(600, 150), 100, 20, 999, false)); // Another platform
+	//300,300,25,200
 	return true;
 }
 
@@ -106,23 +109,38 @@ update_status ModulePhysics::PreUpdate()
     #undef min
 	deltaTime = std::min(deltaTime, maxDeltaTime);
 
+	bool isBallOnPlatform = false;
+
+
 	// Update platforms
 	for (Platform& platform : platforms) {
 		for (Body* body : bodies) {
+			
 			if (platform.checkCollision(*body)) {
-				if (platform.isAWatterPlatform) 
+				// The collision response is handled within the checkCollision method
+				// Additional logic after collision (if necessary)
+				if (platform.isAWatterPlatform)
 				{
 					body->isCollidingWithWater = true;
 				}
 				else
 				{
-					body->isCollidingWithWater = false;
 					platform.applyDamage(5);
 				}
-				
+				isBallOnPlatform = true;
 			}
+			
 		}
 	}
+
+	for (Body* body : bodies) {
+
+		if ( !isBallOnPlatform) {
+			// Establecer el booleano en falso ya que la bola ha salido de la plataforma
+			body->isCollidingWithWater = false;
+		}
+	}
+
 
 	// Handle collisions and physics for each body
 	for (Body* body : bodies) {
@@ -130,6 +148,7 @@ update_status ModulePhysics::PreUpdate()
 			if (platform.checkCollision(*body)) {
 				// The collision response is handled within the checkCollision method
 				// Additional logic after collision (if necessary)
+				
 			}
 		}
 	}
@@ -197,10 +216,31 @@ update_status ModulePhysics::PreUpdate()
 		if (body->isCollidingWithWater)
 		{
 			//Here is the ecuation of hydrodynamics
+			
+			if (body->counterForWatter == 0) {
+				counterForWater = (body->mass * body->acceleration.y);
+			}
+			float phi = counterForWater * cos(body->counterForWatter * 0.05f);  // Adjust the potential function
+			int y = static_cast<int>(phi);
+			body->position.y += y;
+			body->position.x += body->velocity.x * deltaTime;
+			body->velocity.x += body->acceleration.x * deltaTime;
+			if (counterForWater < 0)
+			{
+				tempCounterWatter = 1;
+			}
+			else if(counterForWater>= (body->mass * body->acceleration.y)/2)
+			{
+				tempCounterWatter = -1;
+			}
+			counterForWater += tempCounterWatter;
 
+			body->counterForWatter += 1;
 		}
 		else
 		{
+			
+			tempCounterWatter = 1;
 			// Switch integration schemes based on currentScheme
 			switch (currentScheme)
 			{
@@ -267,10 +307,11 @@ update_status ModulePhysics::PostUpdate()
 	int width, height;
 	App->window->GetWindowSize(width, height);
 	App->renderer->DrawLine(0, height - 290, width, height - 300, 255, 255, 255);
+
 	
 
 
-
+	
 
 
 	if (App->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN)

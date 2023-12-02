@@ -29,9 +29,12 @@ struct Body {
     float elasticity; // coefficient of restitution (bounce factor)
     float friction; // coefficient of friction
     bool isCollidingWithWater = false; //A boolean that checks if the object is colliding with water
+    int counterForWatter; //A counter for the trayectory of the watter
     float radius; // Radius of the ball
     float width; // Width of the platform
     float height; // Height of the platform
+    bool wasOnPlatform;
+    
 
 
 };
@@ -125,6 +128,9 @@ public:
     const std::list<Platform>& GetPlatforms() const {
         return platforms;
     }
+
+    int counterForWater;
+    int tempCounterWatter = 1;
 
 private:
 
