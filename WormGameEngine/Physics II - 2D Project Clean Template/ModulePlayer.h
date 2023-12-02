@@ -6,6 +6,7 @@
 #include "p2Point.h"
 #include "SDL/include/SDL.h"
 #include <list>
+#include <chrono>
 using namespace std;
 
 
@@ -26,6 +27,8 @@ public:
 	float cannonPower = 6;  // Firing power
 	float cannonAngle2;  // Angle in degrees
 	float cannonPower2 = 6;  // Firing power
+
+
 
 private:
 	Body* player = new Body();

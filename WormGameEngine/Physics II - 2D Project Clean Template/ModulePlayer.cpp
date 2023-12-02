@@ -5,6 +5,9 @@
 #include "p2Point.h"
 #include "ModuleInput.h"
 #include <cmath>
+
+
+
 #define DEGTORAD(angleDegrees) ((angleDegrees) * M_PI / 180.0)
 
 ModulePlayer::ModulePlayer(Application* app, bool start_enabled) : Module(app, start_enabled)
@@ -56,9 +59,22 @@ bool ModulePlayer::CleanUp()
 // Update: draw background
 update_status ModulePlayer::Update()
 {
+	
 	// Hotkey to adjuct cannon ball shooting direction
+	
+
+
+
+
 
 	if (firstplayer == true) {
+		if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) {
+			player->position.x -= 3;
+		}
+
+		if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) {
+			player->position.x += 3;
+		}
 		if (App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT)
 		{
 				cannonAngle += 1.0f;
@@ -75,8 +91,16 @@ update_status ModulePlayer::Update()
 		{
 				cannonPower -= 0.5f;
 		}
+
 	}
 	else {
+		if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) {
+			player2->position.x -= 3;
+		}
+
+		if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) {
+			player2->position.x += 3;
+		}
 		if (App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT)
 		{
 			cannonAngle2 += 1.0f;
