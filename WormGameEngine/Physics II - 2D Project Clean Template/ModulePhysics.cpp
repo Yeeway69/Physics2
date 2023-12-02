@@ -134,6 +134,22 @@ update_status ModulePhysics::PreUpdate()
 	}
 
 	for (Body* body : bodies) {
+		for (Platform& platform : platforms) {
+			// Only check collision with active platforms
+			if (platform.health > 0 && platform.checkCollision(*body)) {
+				// Handle collision with platform
+				// If the body is a ball, mark it as inactive
+				if (body->isBall) {  // Assuming you have an 'isBall' flag or similar
+					body->active = false;
+				}
+			}
+		}
+	}
+
+	// Remove inactive bodies or handle them accordingly
+	bodies.remove_if([](Body* body) { return !body->active; });
+
+	for (Body* body : bodies) {
 
 		if ( !isBallOnPlatform) {
 			// Establecer el booleano en falso ya que la bola ha salido de la plataforma
