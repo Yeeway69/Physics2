@@ -33,6 +33,14 @@ private:
 	Body* player = new Body();
 	Body* player2 = new Body();
 	Application* app;
+
+
+	SDL_Texture* player1TextureUp;
+	SDL_Texture* player1TextureRight;
+	SDL_Texture* player1TextureLeft;
+	SDL_Texture* player2TextureUp;
+	SDL_Texture* player2TextureRight;
+	SDL_Texture* player2TextureLeft;
 	
 	int frameCounter = 0;
 	int frameCooldown = 50;

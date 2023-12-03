@@ -41,7 +41,14 @@ ModulePhysics::~ModulePhysics()
 bool ModulePhysics::Start()
 {
 	//platformTexture = App->textures->Load("pinball/flipperL.png");
-	towerTexture1 = App->textures->Load("Assets/Tower.png");
+	towerTexture1 = App->textures->Load("Assets/Tower_1.png");
+	towerTexture2 = App->textures->Load("Assets/Tower_2.png");
+	towerTexture3 = App->textures->Load("Assets/Tower_3.png");
+	towerTexture4 = App->textures->Load("Assets/Tower_4.png");
+	towerTexture5 = App->textures->Load("Assets/Tower_5.png");
+	towerTexture6 = App->textures->Load("Assets/Tower_6.png");
+	towerTexture7 = App->textures->Load("Assets/Tower_7.png");
+	towerTexture8 = App->textures->Load("Assets/Tower_8.png");
 
 
 	LOG("Creating Physics 2D environment");
@@ -401,8 +408,64 @@ update_status ModulePhysics::PostUpdate()
 	{
 	case 0:
 		//You win the game
-	case 6:
+		break;
+	case 1:
 		App->renderer->Blit(towerTexture1, 100, 0);
+		break;
+	case 2:
+		App->renderer->Blit(towerTexture2, 100, 0);
+		break;
+	case 3:
+		App->renderer->Blit(towerTexture3, 100, 0);
+		break;
+	case 4:
+		App->renderer->Blit(towerTexture4, 100, 0);
+		break;
+	case 5:
+		App->renderer->Blit(towerTexture5, 100, 0);
+		break;
+	case 6:
+		App->renderer->Blit(towerTexture6, 100, 0);
+		break;
+	case 7:
+		App->renderer->Blit(towerTexture7, 100, 0);
+		break;
+	case 8:
+		App->renderer->Blit(towerTexture8, 100, 0);
+		break;
+	default:
+		break;
+	}
+
+	switch (tower2.size())
+	{
+	case 0:
+		//You win the game
+		break;
+	case 1:
+		App->renderer->Blit(towerTexture1, 800, 0);
+		break;
+	case 2:
+		App->renderer->Blit(towerTexture2, 800, 0);
+		break;
+	case 3:
+		App->renderer->Blit(towerTexture3, 800, 0);
+		break;
+	case 4:
+		App->renderer->Blit(towerTexture4, 800, 0);
+		break;
+	case 5:
+		App->renderer->Blit(towerTexture5, 800, 0);
+		break;
+	case 6:
+		App->renderer->Blit(towerTexture6, 800, 0);
+		break;
+	case 7:
+		App->renderer->Blit(towerTexture7, 800, 0);
+		break;
+	case 8:
+		App->renderer->Blit(towerTexture8, 800, 0);
+		break;
 	default:
 		break;
 	}

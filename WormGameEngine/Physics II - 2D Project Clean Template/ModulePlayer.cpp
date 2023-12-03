@@ -18,6 +18,17 @@ ModulePlayer::~ModulePlayer()
 // Load assets
 bool ModulePlayer::Start()
 {
+
+	//Init textures
+	player1TextureUp = App->textures->Load("Assets/mortar1.png");
+	player1TextureLeft = App->textures->Load("Assets/mortar2.png");
+	player1TextureRight = App->textures->Load("Assets/mortar3.png");
+	player2TextureUp = App->textures->Load("Assets/mortarn1.png");
+	player2TextureLeft = App->textures->Load("Assets/mortarn2.png");
+	player2TextureRight = App->textures->Load("Assets/mortarn3.png");
+
+
+
 	// Example: Initialize a player body (this is just for demonstration and can be adapted as needed)
 	player->position = { 200.0f, SCREEN_HEIGHT - 600}; // starting position
 	player->velocity = { 0.0f, 0.0f }; // starting velocity
@@ -62,23 +73,24 @@ update_status ModulePlayer::Update()
 	player2->position.y = SCREEN_HEIGHT - 300 - (25 * app->physics->secondPlayerTower.size());
 
 
-	if (firstplayer == true) {
+	if (firstplayer == true) 
+	{
 
-		if (App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT)
+		if (App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT && cannonAngle<170)
 		{
 			cannonAngle += 1.0f;
 		}
-		if (App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
+		if (App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT && cannonAngle >10)
 		{
 			cannonAngle -= 1.0f;
 		}
 		if (App->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT && cannonPower < 150)  // Adjust as needed based on your input handling
 		{
-				cannonPower += 0.5f;
+			cannonPower += 0.5f;
 		}
 		if (App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT && cannonPower > 0)  // Adjust as needed based on your input handling
 		{
-				cannonPower -= 0.5f;
+			cannonPower -= 0.5f;
 		}
 		if (App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT && cannonPower > 0)  // Adjust as needed based on your input handling
 		{
@@ -93,11 +105,11 @@ update_status ModulePlayer::Update()
 		}
 	}
 	else {
-		if (App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT)
+		if (App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT && cannonAngle2 < 170)
 		{
 			cannonAngle2 += 1.0f;
 		}
-		if (App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
+		if (App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT && cannonAngle2 > 10)
 		{
 			cannonAngle2 -= 1.0f;
 		}
@@ -195,7 +207,33 @@ update_status ModulePlayer::Update()
 	App->renderer->DrawGrowingRectangle(SCREEN_WIDTH*0.05f, SCREEN_HEIGHT/2, cannonPower, 255, 255, 255,255, true);
 	App->renderer->DrawGrowingRectangle(SCREEN_WIDTH * 0.97f, SCREEN_HEIGHT / 2, cannonPower2, 255, 255, 255, 255, true);
 
-
+	//rendering
+	float radianAngle = DEGTORAD(cannonAngle);
+	if (cosf(radianAngle)>0.4f)
+	{
+		App->renderer->Blit(player1TextureRight, player->position.x - 50, player->position.y - 50);
+	}
+	else if (cosf(radianAngle) < -0.4f) 
+	{
+		App->renderer->Blit(player1TextureLeft, player->position.x - 50, player->position.y - 50);
+	}
+	else
+	{
+		App->renderer->Blit(player1TextureUp, player->position.x-50, player->position.y-50);
+	}
+	float radianAngle2 = DEGTORAD(cannonAngle2);
+	if (cosf(radianAngle2) > 0.4f)
+	{
+		App->renderer->Blit(player2TextureLeft, player2->position.x - 50, player2->position.y - 50);
+	}
+	else if (cosf(radianAngle2) < -0.4f)
+	{
+		App->renderer->Blit(player2TextureRight, player2->position.x - 50, player2->position.y - 50);
+	}
+	else
+	{
+		App->renderer->Blit(player2TextureUp, player2->position.x - 50, player2->position.y - 50);
+	}
 
 	return UPDATE_CONTINUE;
 }
