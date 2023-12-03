@@ -26,7 +26,9 @@ public:
 	float cannonPower = 6;  // Firing power
 	float cannonAngle2;  // Angle in degrees
 	float cannonPower2 = 6;  // Firing power
-
+	int ballused1;
+	int ballused2;
+	
 	
 
 private:
@@ -46,4 +48,6 @@ private:
 	int frameCooldown = 50;
 	bool hasShot = false;
 	bool firstplayer = true;
+	bool firstalive = true;
+	bool secondalive = true;
 };

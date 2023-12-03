@@ -117,7 +117,10 @@ public:
     update_status PreUpdate();
     update_status PostUpdate();
     bool CleanUp();
-
+    int score1;
+    int score2;
+    int towerlive1;
+    int towerlive2;
     void UpdateWindowTitle();  // Add this line
 
     update_status PreUpdate(float deltaTime);  // Notice the float argument

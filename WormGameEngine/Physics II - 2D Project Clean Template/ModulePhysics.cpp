@@ -49,7 +49,8 @@ bool ModulePhysics::Start()
 	towerTexture6 = App->textures->Load("Assets/Tower_6.png");
 	towerTexture7 = App->textures->Load("Assets/Tower_7.png");
 	towerTexture8 = App->textures->Load("Assets/Tower_8.png");
-
+	towerlive1 = 8;
+	towerlive2 = 8;
 
 	LOG("Creating Physics 2D environment");
 
@@ -176,7 +177,8 @@ update_status ModulePhysics::PreUpdate()
 				firstPlayerTower.pop_front();
 				bodies.remove(body);
 				goto endLoop;
-
+				score2++;
+				towerlive1--;
 			}
 		}
 	}
@@ -192,7 +194,8 @@ update_status ModulePhysics::PreUpdate()
 				secondPlayerTower.pop_front();
 				bodies.remove(body);
 				goto endLoop2;
-
+				score1++;
+				towerlive2--;
 			}
 		}
 	}
@@ -408,9 +411,11 @@ update_status ModulePhysics::PostUpdate()
 	{
 	case 0:
 		//You win the game
+		towerlive1 = 0;
 		break;
 	case 1:
 		App->renderer->Blit(towerTexture1, 100, 0);
+			
 		break;
 	case 2:
 		App->renderer->Blit(towerTexture2, 100, 0);
@@ -441,6 +446,7 @@ update_status ModulePhysics::PostUpdate()
 	{
 	case 0:
 		//You win the game
+		towerlive2 = 0;
 		break;
 	case 1:
 		App->renderer->Blit(towerTexture1, 800, 0);
