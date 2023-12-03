@@ -29,14 +29,9 @@ struct Body {
     float elasticity; // coefficient of restitution (bounce factor)
     float friction; // coefficient of friction
     bool isCollidingWithWater = false; //A boolean that checks if the object is colliding with water
-    int counterForWatter; //A counter for the trayectory of the watter
     float radius; // Radius of the ball
     float width; // Width of the platform
     float height; // Height of the platform
-    bool wasOnPlatform;
-    bool active = true;
-    bool isAWatterBall = false;
-    bool isBall = false;
 
 
 };
@@ -47,9 +42,8 @@ struct Platform {
     fPoint position;
     float width, height;
     int health;
-    bool isAWatterPlatform;
 
-    Platform(fPoint pos, float w, float h, bool waterPlatform) : position(pos), width(w), height(h), health(20), isAWatterPlatform(waterPlatform) {}
+    Platform(fPoint pos, float w, float h) : position(pos), width(w), height(h), health(10) {}
 
     // Add collision checking method if needed
     bool Platform::checkCollision(Body& ball) {
@@ -130,9 +124,6 @@ public:
     const std::list<Platform>& GetPlatforms() const {
         return platforms;
     }
-
-    int counterForWater;
-    int tempCounterWatter = 1;
 
 private:
 
