@@ -44,14 +44,29 @@ bool ModulePhysics::Start()
 
 	// Example of adding platforms
 	platforms.push_back(Platform(fPoint(300, 400), 180, 70, true)); // Position (100, 300), Width 200, Height 30, is a water platform true
-	platforms.push_back(Platform(fPoint(800, 100), 150, 20, false)); // Another platform
-	platforms.push_back(Platform(fPoint(500, 300), 100, 20, false)); // Another platform
+	//platforms.push_back(Platform(fPoint(800, 100), 150, 20, false)); // Another platform
+	//platforms.push_back(Platform(fPoint(500, 300), 100, 20, false)); // Another platform
 	platforms.push_back(Platform(fPoint(100, 100), 100, 20, false)); // Another platform
 	platforms.push_back(Platform(fPoint(900, 200), 100, 20, false)); // Another platform
 	platforms.push_back(Platform(fPoint(1000, 150), 100, 20, false)); // Another platform
 	platforms.push_back(Platform(fPoint(700, 400), 100, 20, false)); // Another platform
 	platforms.push_back(Platform(fPoint(200, 250), 100, 20, false)); // Another platform
 	platforms.push_back(Platform(fPoint(600, 150), 100, 20, false)); // Another platform
+	
+	
+	firstPlayerTower.push_back(Platform(fPoint(100, 175), 150, 50, false)); // Another platform
+	firstPlayerTower.push_back(Platform(fPoint(100, 225), 150, 50, false)); // Another platform
+	firstPlayerTower.push_back(Platform(fPoint(100, 275), 150, 50, false)); // Another platform
+	firstPlayerTower.push_back(Platform(fPoint(100, 325), 150, 50, false)); // Another platform
+	firstPlayerTower.push_back(Platform(fPoint(100, 375), 150, 50, false)); // Another platform
+	firstPlayerTower.push_back(Platform(fPoint(100, 425), 150, 50, false)); // Another platform
+
+	secondPlayerTower.push_back(Platform(fPoint(800, 175), 150, 50, false)); // Another platform
+	secondPlayerTower.push_back(Platform(fPoint(800, 225), 150, 50, false)); // Another platform
+	secondPlayerTower.push_back(Platform(fPoint(800, 275), 150, 50, false)); // Another platform
+	secondPlayerTower.push_back(Platform(fPoint(800, 325), 150, 50, false)); // Another platform
+	secondPlayerTower.push_back(Platform(fPoint(800, 375), 150, 50, false)); // Another platform
+	secondPlayerTower.push_back(Platform(fPoint(800, 425), 150, 50, false)); // Another platform
 	//platforms.push_back(Platform(fPoint(300, 300), 25, 200, 999, false)); // Another platform indestructible
 	//platforms.push_back(Platform(fPoint(600, 150), 100, 20, 999, false)); // Another platform
 	//300,300,25,200
@@ -128,6 +143,38 @@ update_status ModulePhysics::PreUpdate()
 					platform.applyDamage(5);
 				}
 				isBallOnPlatform = true;
+			}
+			
+		}
+	}
+	
+	for (Platform& platform : firstPlayerTower) {
+		for (Body* body : bodies) {
+			if (platform.health >= 0) {
+				if (platform.checkCollision(*body)) {
+					// The collision response is handled within the checkCollision method
+					// Additional logic after collision (if necessary)
+					platform.applyDamage(50);
+					bodies.remove(body);
+					break;
+
+				}
+			}
+			
+			
+		}
+	}
+	for (Platform platform : secondPlayerTower) {
+		for (Body* body : bodies) {
+			
+			if (platform.checkCollision(*body)) {
+				// The collision response is handled within the checkCollision method
+				// Additional logic after collision (if necessary)
+				
+				platform.applyDamage(50);
+				bodies.remove(body);
+				break;
+
 			}
 			
 		}
@@ -233,15 +280,15 @@ update_status ModulePhysics::PreUpdate()
 		{
 			//Here is the ecuation of hydrodynamics
 			
-			if (body->counterForWatter == 0) {
+			if (body->counterForWatter == 0) { //initialize counter 
 				counterForWater = (body->mass * body->acceleration.y);
 			}
 			float phi = counterForWater * cos(body->counterForWatter * 0.05f);  // Adjust the potential function
-			int y = static_cast<int>(phi);
-			body->position.y += y;
+			int y = static_cast<int>(phi); //get new position
+			body->position.y += y; // add the trayectory of the new position
 			body->position.x += body->velocity.x * deltaTime;
-			body->velocity.x += body->acceleration.x * deltaTime;
-			if (counterForWater < 0)
+			body->velocity.x += body->acceleration.x * deltaTime; //Update x position
+			if (counterForWater < 0) //mantain the values of the cos stable to not get huge trayectories
 			{
 				tempCounterWatter = 1;
 			}
@@ -249,9 +296,9 @@ update_status ModulePhysics::PreUpdate()
 			{
 				tempCounterWatter = -1;
 			}
-			counterForWater += tempCounterWatter;
+			counterForWater += tempCounterWatter; 
 
-			body->counterForWatter += 1;
+			body->counterForWatter += 1; //add another position to the trayectory
 		}
 		else
 		{
@@ -324,10 +371,48 @@ update_status ModulePhysics::PostUpdate()
 	App->window->GetWindowSize(width, height);
 	App->renderer->DrawLine(0, height - 290, width, height - 300, 255, 255, 255);
 
+	counterForRenderingTower = 0;
+	counterForRenderingTower2 = 0;
+	const std::list<Platform>& tower1 = App->physics->GetTower1();
+	for (const Platform& platform : tower1) {
+		if (platform.health < 0) {
+			counterForRenderingTower++;
+		}
+	}
+	for (const Platform& platform : tower1) 
+	{
+		if (counterForRenderingTower == 0)
+		{
+			SDL_Rect rect = { static_cast<int>(platform.position.x), static_cast<int>(platform.position.y),
+							  static_cast<int>(platform.width), static_cast<int>(platform.height) };
+			App->renderer->DrawQuad(rect, 255, 255, 255); // Red color for platforms
+		}
+		else
+		{
+			counterForRenderingTower--;
+		}
+	}
+	const std::list<Platform>& tower2 = App->physics->GetTower2();
+	for (const Platform& platform : tower2) 
+	{
+		if (platform.health < 0) {
+			counterForRenderingTower2++;
+		}
+	}
 	
-
-
-	
+	for (const Platform& platform : tower2) 
+	{
+		if (counterForRenderingTower2 == 0)
+		{
+			SDL_Rect rect = { static_cast<int>(platform.position.x), static_cast<int>(platform.position.y),
+							  static_cast<int>(platform.width), static_cast<int>(platform.height) };
+			App->renderer->DrawQuad(rect, 255, 255, 255); // Red color for platforms
+		}
+		else
+		{
+			counterForRenderingTower2--;
+		}
+	}
 
 
 	if (App->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN)
@@ -379,8 +464,11 @@ update_status ModulePhysics::PostUpdate()
 	{
 		for (list<Body*>::iterator it = bodies.begin(); it != bodies.end(); ++it)
 		{
+			
 			Body* body = *it;
 			App->renderer->DrawCircle(body->position.x, body->position.y, 10, 255, 0, 0);
+
+			
 		}
 	}
 

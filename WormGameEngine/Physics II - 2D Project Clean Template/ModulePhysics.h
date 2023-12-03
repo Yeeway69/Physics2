@@ -75,7 +75,10 @@ struct Platform {
             // Collision detected, now determine the response
             if (std::abs(distanceX) > std::abs(distanceY)) {
                 // Horizontal collision, reverse X velocity
-                ball.velocity.x *= -1;
+                if (!isAWatterPlatform) {
+                    ball.velocity.x *= -1;
+                }
+
             }
             else {
                 // Vertical collision, reverse Y velocity
@@ -129,10 +132,20 @@ public:
 
     const std::list<Platform>& GetPlatforms() const {
         return platforms;
+    } 
+    const std::list<Platform>& GetTower1() const {
+        return firstPlayerTower;
+    } 
+    const std::list<Platform>& GetTower2() const {
+        return secondPlayerTower;
     }
 
     int counterForWater;
     int tempCounterWatter = 1;
+    std::list<Platform> firstPlayerTower;
+    std::list<Platform> secondPlayerTower;
+    int counterForRenderingTower = 0;
+    int counterForRenderingTower2 = 0;
 
 private:
 

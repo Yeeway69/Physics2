@@ -19,7 +19,7 @@ ModulePlayer::~ModulePlayer()
 bool ModulePlayer::Start()
 {
 	// Example: Initialize a player body (this is just for demonstration and can be adapted as needed)
-	player->position = { 200.0f, SCREEN_HEIGHT - 300 }; // starting position
+	player->position = { 200.0f, SCREEN_HEIGHT - 600}; // starting position
 	player->velocity = { 0.0f, 0.0f }; // starting velocity
 	player->acceleration = gravity; // affected by gravity
 	player->mass = 1.0f; // arbitrary mass
@@ -33,7 +33,7 @@ bool ModulePlayer::Start()
 	LOG("Loading player");
 
 	//player2
-	player2->position = { 950.0f,SCREEN_HEIGHT - 300 };
+	player2->position = { 850.0f,SCREEN_HEIGHT - 600 };
 	player2->velocity = { 0.0f, 0.0f }; // starting velocity
 	player2->acceleration = gravity; // affected by gravity
 	player2->mass = 1.0f; // arbitrary mass
@@ -57,12 +57,16 @@ bool ModulePlayer::CleanUp()
 update_status ModulePlayer::Update()
 {
 	// Hotkey to adjuct cannon ball shooting direction
+	
+	player->position.y = SCREEN_HEIGHT - 600 +(50*app->physics->counterForRenderingTower);
+	player2->position.y = SCREEN_HEIGHT - 600 +(50*app->physics->counterForRenderingTower2);
+
 
 	if (firstplayer == true) {
 
 		if (App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT)
 		{
-				cannonAngle += 1.0f;
+			cannonAngle += 1.0f;
 		}
 		if (App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
 		{
@@ -81,10 +85,10 @@ update_status ModulePlayer::Update()
 			cannonPower -= 0.5f;
 		}
 
-		if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) {
+		if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT && player->position.x>110) {
 			player->position.x -= 3;
 		}
-		if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) {
+		if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT && player->position.x < 240) {
 			player->position.x += 3;
 		}
 	}
@@ -105,10 +109,10 @@ update_status ModulePlayer::Update()
 		{
 			cannonPower2 -= 0.5f;
 		}
-		if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) {
+		if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT && player2->position.x > 810) {
 			player2->position.x -= 3;
 		}
-		if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) {
+		if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT && player2->position.x <940) {
 			player2->position.x += 3;
 		}
 	}
@@ -189,7 +193,7 @@ update_status ModulePlayer::Update()
 
 	//This is the power var 
 	App->renderer->DrawGrowingRectangle(SCREEN_WIDTH*0.05f, SCREEN_HEIGHT/2, cannonPower, 255, 255, 255,255, true);
-	App->renderer->DrawGrowingRectangle(SCREEN_WIDTH * 0.05f, SCREEN_HEIGHT / 2, cannonPower2, 255, 255, 255, 255, true);
+	App->renderer->DrawGrowingRectangle(SCREEN_WIDTH * 0.97f, SCREEN_HEIGHT / 2, cannonPower2, 255, 255, 255, 255, true);
 
 
 

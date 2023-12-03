@@ -40,6 +40,7 @@ public:
 	bool CleanUp();
 
 public:
+	Application* app;
 
 	SDL_Texture* graphics;
 

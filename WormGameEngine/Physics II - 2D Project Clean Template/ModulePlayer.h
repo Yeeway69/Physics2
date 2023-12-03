@@ -27,6 +27,8 @@ public:
 	float cannonAngle2;  // Angle in degrees
 	float cannonPower2 = 6;  // Firing power
 
+	
+
 private:
 	Body* player = new Body();
 	Body* player2 = new Body();
