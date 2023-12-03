@@ -48,14 +48,14 @@ update_status ModuleSceneIntro::Update()
 		}
 	}
 
-	//// Debug: Render platform positions
-	//for (const Platform& platform : App->physics->GetPlatforms()) {
-	//	SDL_Rect rect = { static_cast<int>(platform.position.x), static_cast<int>(platform.position.y),
-	//					  static_cast<int>(platform.width), static_cast<int>(platform.height) };
-	//	App->renderer->DrawQuad(rect, 0, 255, 0, 255, false); // Green color for platform positions
+	// Debug: Render platform positions
+	for (const Platform& platform : App->physics->GetPlatforms()) {
+		SDL_Rect rect = { static_cast<int>(platform.position.x), static_cast<int>(platform.position.y),
+						  static_cast<int>(platform.width), static_cast<int>(platform.height) };
+		App->renderer->DrawQuad(rect, 0, 255, 0, 255, false); // Green color for platform positions
 
-	//	
-	//}
+		
+	}
 
 	return UPDATE_CONTINUE;
 }

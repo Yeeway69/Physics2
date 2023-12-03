@@ -25,18 +25,14 @@ public:
 public:
 	float cannonAngle;  // Angle in degrees
 	float cannonPower = 6;  // Firing power
-	float cannonAngle2;  // Angle in degrees
-	float cannonPower2 = 6;  // Firing power
 
 
 
 private:
 	Body* player = new Body();
-	Body* player2 = new Body();
 	Application* app;
 	
 	int frameCounter = 0;
 	int frameCooldown = 50;
 	bool hasShot = false;
-	bool firstplayer = true;
 };
