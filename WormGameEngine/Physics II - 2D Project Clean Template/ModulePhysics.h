@@ -98,6 +98,12 @@ struct Platform {
             // Handle destruction
         }
     }
+
+    bool operator==(const Platform& other) const {
+        // Aquí debes definir cómo comparar dos objetos Platform
+        // Por ejemplo, podrías comparar sus atributos, como position, width, height, etc.
+        return position == other.position && width == other.width && height == other.height;
+    }
 };
 
 

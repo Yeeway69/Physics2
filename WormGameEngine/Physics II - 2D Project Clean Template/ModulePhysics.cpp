@@ -148,37 +148,39 @@ update_status ModulePhysics::PreUpdate()
 		}
 	}
 	
-	for (Platform& platform : firstPlayerTower) {
-		for (Body* body : bodies) {
-			if (platform.health >= 0) {
-				if (platform.checkCollision(*body)) {
+	for (Platform& platform : firstPlayerTower) 
+	{
+		for (Body* body : bodies) 
+		{
+			if (platform.checkCollision(*body)) 
+			{
 					// The collision response is handled within the checkCollision method
 					// Additional logic after collision (if necessary)
-					platform.applyDamage(50);
-					bodies.remove(body);
-					break;
-
-				}
-			}
-			
-			
-		}
-	}
-	for (Platform platform : secondPlayerTower) {
-		for (Body* body : bodies) {
-			
-			if (platform.checkCollision(*body)) {
-				// The collision response is handled within the checkCollision method
-				// Additional logic after collision (if necessary)
-				
-				platform.applyDamage(50);
+				firstPlayerTower.pop_front();
 				bodies.remove(body);
-				break;
+				goto endLoop;
 
 			}
-			
 		}
 	}
+	endLoop:
+	for (Platform& platform : secondPlayerTower) 
+	{
+		for (Body* body : bodies) 
+		{
+			if (platform.checkCollision(*body)) 
+			{
+					// The collision response is handled within the checkCollision method
+					// Additional logic after collision (if necessary)
+				secondPlayerTower.pop_front();
+				bodies.remove(body);
+				goto endLoop2;
+
+			}
+		}
+	}
+	endLoop2:
+	
 
 	for (Body* body : bodies) {
 		for (Platform& platform : platforms) {
@@ -365,33 +367,19 @@ update_status ModulePhysics::PreUpdate()
 update_status ModulePhysics::PostUpdate()
 {
 	// In the PostUpdate method
-	// 
 	//draw the ground with a line
 	int width, height;
 	App->window->GetWindowSize(width, height);
 	App->renderer->DrawLine(0, height - 290, width, height - 300, 255, 255, 255);
 
-	counterForRenderingTower = 0;
-	counterForRenderingTower2 = 0;
 	const std::list<Platform>& tower1 = App->physics->GetTower1();
-	for (const Platform& platform : tower1) {
-		if (platform.health < 0) {
-			counterForRenderingTower++;
-		}
-	}
 	for (const Platform& platform : tower1) 
 	{
-		if (counterForRenderingTower == 0)
-		{
 			SDL_Rect rect = { static_cast<int>(platform.position.x), static_cast<int>(platform.position.y),
 							  static_cast<int>(platform.width), static_cast<int>(platform.height) };
 			App->renderer->DrawQuad(rect, 255, 255, 255); // Red color for platforms
-		}
-		else
-		{
-			counterForRenderingTower--;
-		}
 	}
+	counterForRenderingTower2 = 0;
 	const std::list<Platform>& tower2 = App->physics->GetTower2();
 	for (const Platform& platform : tower2) 
 	{
