@@ -59,6 +59,7 @@ update_status ModulePlayer::Update()
 	// Hotkey to adjuct cannon ball shooting direction
 
 	if (firstplayer == true) {
+
 		if (App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT)
 		{
 				cannonAngle += 1.0f;
@@ -74,6 +75,17 @@ update_status ModulePlayer::Update()
 		if (App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT && cannonPower > 0)  // Adjust as needed based on your input handling
 		{
 				cannonPower -= 0.5f;
+		}
+		if (App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT && cannonPower > 0)  // Adjust as needed based on your input handling
+		{
+			cannonPower -= 0.5f;
+		}
+
+		if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) {
+			player->position.x -= 3;
+		}
+		if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) {
+			player->position.x += 3;
 		}
 	}
 	else {
@@ -92,6 +104,12 @@ update_status ModulePlayer::Update()
 		if (App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT && cannonPower2 > 0)  // Adjust as needed based on your input handling
 		{
 			cannonPower2 -= 0.5f;
+		}
+		if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) {
+			player2->position.x -= 3;
+		}
+		if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) {
+			player2->position.x += 3;
 		}
 	}
 	
