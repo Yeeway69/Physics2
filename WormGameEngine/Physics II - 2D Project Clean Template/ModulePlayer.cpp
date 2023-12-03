@@ -58,8 +58,8 @@ update_status ModulePlayer::Update()
 {
 	// Hotkey to adjuct cannon ball shooting direction
 	
-	player->position.y = SCREEN_HEIGHT - 300-(50*app->physics->firstPlayerTower.size());
-	player2->position.y = SCREEN_HEIGHT - 300 - (50 * app->physics->firstPlayerTower.size());
+	player->position.y = SCREEN_HEIGHT - 300-(25*app->physics->firstPlayerTower.size());
+	player2->position.y = SCREEN_HEIGHT - 300 - (25 * app->physics->secondPlayerTower.size());
 
 
 	if (firstplayer == true) {

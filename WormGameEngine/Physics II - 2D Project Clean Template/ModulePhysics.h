@@ -180,5 +180,15 @@ private:
 
     IntegrationScheme currentScheme;
 
+    SDL_Texture* platformTexture;
+    SDL_Texture* towerTexture1;
+    SDL_Texture* towerTexture2;
+    SDL_Texture* towerTexture3;
+    SDL_Texture* towerTexture4;
+    SDL_Texture* towerTexture5;
+    SDL_Texture* towerTexture6;
+    SDL_Texture* towerTexture7;
+    SDL_Texture* towerTexture8;
+
 
 };

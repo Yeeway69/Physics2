@@ -40,8 +40,8 @@ ModulePhysics::~ModulePhysics()
 
 bool ModulePhysics::Start()
 {
-
-
+	//platformTexture = App->textures->Load("pinball/flipperL.png");
+	towerTexture1 = App->textures->Load("Assets/Tower.png");
 
 
 	LOG("Creating Physics 2D environment");
@@ -50,27 +50,33 @@ bool ModulePhysics::Start()
 	platforms.push_back(Platform(fPoint(300, 400), 180, 70, true)); // Position (100, 300), Width 200, Height 30, is a water platform true
 	//platforms.push_back(Platform(fPoint(800, 100), 150, 20, false)); // Another platform
 	//platforms.push_back(Platform(fPoint(500, 300), 100, 20, false)); // Another platform
-	platforms.push_back(Platform(fPoint(100, 100), 100, 20, false)); // Another platform
+	//platforms.push_back(Platform(fPoint(100, 100), 100, 20, false)); // Another platform
 	platforms.push_back(Platform(fPoint(900, 200), 100, 20, false)); // Another platform
 	platforms.push_back(Platform(fPoint(1000, 150), 100, 20, false)); // Another platform
 	platforms.push_back(Platform(fPoint(700, 400), 100, 20, false)); // Another platform
-	platforms.push_back(Platform(fPoint(200, 250), 100, 20, false)); // Another platform
+	//platforms.push_back(Platform(fPoint(200, 250), 100, 20, false)); // Another platform
 	platforms.push_back(Platform(fPoint(600, 150), 100, 20, false)); // Another platform
 	
 	
-	firstPlayerTower.push_back(Platform(fPoint(100, 175), 150, 50, false)); // Another platform
-	firstPlayerTower.push_back(Platform(fPoint(100, 225), 150, 50, false)); // Another platform
-	firstPlayerTower.push_back(Platform(fPoint(100, 275), 150, 50, false)); // Another platform
-	firstPlayerTower.push_back(Platform(fPoint(100, 325), 150, 50, false)); // Another platform
-	firstPlayerTower.push_back(Platform(fPoint(100, 375), 150, 50, false)); // Another platform
-	firstPlayerTower.push_back(Platform(fPoint(100, 425), 150, 50, false)); // Another platform
 
-	secondPlayerTower.push_back(Platform(fPoint(800, 175), 150, 50, false)); // Another platform
-	secondPlayerTower.push_back(Platform(fPoint(800, 225), 150, 50, false)); // Another platform
-	secondPlayerTower.push_back(Platform(fPoint(800, 275), 150, 50, false)); // Another platform
-	secondPlayerTower.push_back(Platform(fPoint(800, 325), 150, 50, false)); // Another platform
-	secondPlayerTower.push_back(Platform(fPoint(800, 375), 150, 50, false)); // Another platform
-	secondPlayerTower.push_back(Platform(fPoint(800, 425), 150, 50, false)); // Another platform
+	firstPlayerTower.push_back(Platform(fPoint(100, 275), 150, 25, false)); // Another platform
+	firstPlayerTower.push_back(Platform(fPoint(100, 300), 150, 25, false)); // Another platform
+	firstPlayerTower.push_back(Platform(fPoint(100, 325), 150, 25, false)); // Another platform
+	firstPlayerTower.push_back(Platform(fPoint(100, 350), 150, 25, false)); // Another platform
+	firstPlayerTower.push_back(Platform(fPoint(100, 375), 150, 25, false)); // Another platform
+	firstPlayerTower.push_back(Platform(fPoint(100, 400), 150, 25, false)); // Another platform
+	firstPlayerTower.push_back(Platform(fPoint(100, 425), 150, 25, false)); // Another platform
+	firstPlayerTower.push_back(Platform(fPoint(100, 450), 150, 25, false)); // Another platform
+
+
+	secondPlayerTower.push_back(Platform(fPoint(800, 275), 150, 25, false)); // Another platform
+	secondPlayerTower.push_back(Platform(fPoint(800, 300), 150, 25, false)); // Another platform
+	secondPlayerTower.push_back(Platform(fPoint(800, 325), 150, 25, false)); // Another platform
+	secondPlayerTower.push_back(Platform(fPoint(800, 350), 150, 25, false)); // Another platform
+	secondPlayerTower.push_back(Platform(fPoint(800, 375), 150, 25, false)); // Another platform
+	secondPlayerTower.push_back(Platform(fPoint(800, 400), 150, 25, false)); // Another platform
+	secondPlayerTower.push_back(Platform(fPoint(800, 425), 150, 25, false)); // Another platform
+	secondPlayerTower.push_back(Platform(fPoint(800, 450), 150, 25, false)); // Another platform
 	//platforms.push_back(Platform(fPoint(300, 300), 25, 200, 999, false)); // Another platform indestructible
 	//platforms.push_back(Platform(fPoint(600, 150), 100, 20, 999, false)); // Another platform
 	//300,300,25,200
@@ -383,28 +389,25 @@ update_status ModulePhysics::PostUpdate()
 							  static_cast<int>(platform.width), static_cast<int>(platform.height) };
 			App->renderer->DrawQuad(rect, 255, 255, 255); // Red color for platforms
 	}
-	counterForRenderingTower2 = 0;
 	const std::list<Platform>& tower2 = App->physics->GetTower2();
 	for (const Platform& platform : tower2) 
 	{
-		if (platform.health < 0) {
-			counterForRenderingTower2++;
-		}
-	}
-	
-	for (const Platform& platform : tower2) 
-	{
-		if (counterForRenderingTower2 == 0)
-		{
 			SDL_Rect rect = { static_cast<int>(platform.position.x), static_cast<int>(platform.position.y),
 							  static_cast<int>(platform.width), static_cast<int>(platform.height) };
 			App->renderer->DrawQuad(rect, 255, 255, 255); // Red color for platforms
-		}
-		else
-		{
-			counterForRenderingTower2--;
-		}
 	}
+
+	switch (tower1.size())
+	{
+	case 0:
+		//You win the game
+	case 6:
+		App->renderer->Blit(towerTexture1, 100, 0);
+	default:
+		break;
+	}
+
+
 
 
 	if (App->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN)
