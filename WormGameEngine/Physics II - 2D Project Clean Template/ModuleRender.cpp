@@ -251,7 +251,7 @@ bool ModuleRender::DrawGrowingRectangle(int x, int y, float sizeFactor, Uint8 r,
 
 	SDL_Rect rect = { x - width / 2, y , width, -height };
 
-	int result = SDL_RenderDrawRect(renderer, &rect);
+	int result = SDL_RenderFillRect(renderer, &rect);
 
 	if (result != 0)
 	{

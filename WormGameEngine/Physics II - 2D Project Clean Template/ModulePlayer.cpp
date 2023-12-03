@@ -204,8 +204,8 @@ update_status ModulePlayer::Update()
 	}
 
 	//This is the power var 
-	App->renderer->DrawGrowingRectangle(SCREEN_WIDTH*0.05f, SCREEN_HEIGHT/2, cannonPower, 255, 255, 255,255, true);
-	App->renderer->DrawGrowingRectangle(SCREEN_WIDTH * 0.97f, SCREEN_HEIGHT / 2, cannonPower2, 255, 255, 255, 255, true);
+	App->renderer->DrawGrowingRectangle(SCREEN_WIDTH*0.05f, SCREEN_HEIGHT/2, cannonPower, 0, 152, 70,255, true);
+	App->renderer->DrawGrowingRectangle(SCREEN_WIDTH * 0.97f, SCREEN_HEIGHT / 2, cannonPower2, 0, 152, 70, 255, true);
 
 	//rendering
 	float radianAngle = DEGTORAD(cannonAngle);
@@ -224,15 +224,15 @@ update_status ModulePlayer::Update()
 	float radianAngle2 = DEGTORAD(cannonAngle2);
 	if (cosf(radianAngle2) > 0.4f)
 	{
-		App->renderer->Blit(player2TextureLeft, player2->position.x - 50, player2->position.y - 50);
+		App->renderer->Blit(player2TextureLeft, player2->position.x - 40, player2->position.y - 50);
 	}
 	else if (cosf(radianAngle2) < -0.4f)
 	{
-		App->renderer->Blit(player2TextureRight, player2->position.x - 50, player2->position.y - 50);
+		App->renderer->Blit(player2TextureRight, player2->position.x - 40, player2->position.y - 50);
 	}
 	else
 	{
-		App->renderer->Blit(player2TextureUp, player2->position.x - 50, player2->position.y - 50);
+		App->renderer->Blit(player2TextureUp, player2->position.x - 40, player2->position.y - 50);
 	}
 
 	return UPDATE_CONTINUE;
