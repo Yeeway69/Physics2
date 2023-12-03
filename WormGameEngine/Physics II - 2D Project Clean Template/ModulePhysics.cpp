@@ -40,6 +40,10 @@ ModulePhysics::~ModulePhysics()
 
 bool ModulePhysics::Start()
 {
+
+
+
+
 	LOG("Creating Physics 2D environment");
 
 	// Example of adding platforms

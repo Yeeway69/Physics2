@@ -42,6 +42,7 @@ public:
 public:
 	Application* app;
 
+	SDL_Texture* backgroundTexture = nullptr;
 	SDL_Texture* graphics;
 
 	SDL_Texture* tex_light_tiny;

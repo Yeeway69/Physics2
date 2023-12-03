@@ -21,7 +21,7 @@ bool ModuleSceneIntro::Start()
 {
 	LOG("Loading Intro assets");
 	bool ret = true;
-
+	backgroundTexture = App->textures->Load("Assets/fondofinal.png");
 	App->renderer->camera.x = App->renderer->camera.y = 0;
 
 	return ret;
@@ -38,6 +38,9 @@ bool ModuleSceneIntro::CleanUp()
 // Update: draw background
 update_status ModuleSceneIntro::Update()
 {
+
+	App->renderer->Blit(backgroundTexture, 0, 0);
+
 	// Render platforms
 	const std::list<Platform>& platforms = App->physics->GetPlatforms();
 	for (const Platform& platform : platforms) {
