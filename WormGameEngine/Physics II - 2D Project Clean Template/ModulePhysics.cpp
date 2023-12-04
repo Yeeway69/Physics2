@@ -56,14 +56,18 @@ bool ModulePhysics::Start()
 
 	// Example of adding platforms
 	platforms.push_back(Platform(fPoint(300, 400), 180, 70, true)); // Position (100, 300), Width 200, Height 30, is a water platform true
-	//platforms.push_back(Platform(fPoint(800, 100), 150, 20, false)); // Another platform
-	//platforms.push_back(Platform(fPoint(500, 300), 100, 20, false)); // Another platform
-	//platforms.push_back(Platform(fPoint(100, 100), 100, 20, false)); // Another platform
+	platforms.push_back(Platform(fPoint(800, 100), 150, 20, false)); // Another platform
+	platforms.push_back(Platform(fPoint(500, 300), 100, 20, false)); // Another platform
+	platforms.push_back(Platform(fPoint(100, 100), 100, 20, false)); // Another platform
 	platforms.push_back(Platform(fPoint(900, 200), 100, 20, false)); // Another platform
-	platforms.push_back(Platform(fPoint(1000, 150), 100, 20, false)); // Another platform
+	platforms.push_back(Platform(fPoint(200, 150), 100, 20, false)); // Another platform
 	platforms.push_back(Platform(fPoint(700, 400), 100, 20, false)); // Another platform
-	//platforms.push_back(Platform(fPoint(200, 250), 100, 20, false)); // Another platform
+	platforms.push_back(Platform(fPoint(200, 250), 100, 20, false)); // Another platform
 	platforms.push_back(Platform(fPoint(600, 150), 100, 20, false)); // Another platform
+	platforms.push_back(Platform(fPoint(400, 300), 100, 20, false)); // Another platform
+	platforms.push_back(Platform(fPoint(200, 250), 100, 20, false)); // Another platform
+	platforms.push_back(Platform(fPoint(600, 150), 100, 20, false)); // Another platform
+
 	
 	
 

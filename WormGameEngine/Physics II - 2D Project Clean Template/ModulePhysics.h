@@ -49,7 +49,7 @@ struct Platform {
     int health;
     bool isAWatterPlatform;
 
-    Platform(fPoint pos, float w, float h, bool waterPlatform) : position(pos), width(w), height(h), health(20), isAWatterPlatform(waterPlatform) {}
+    Platform(fPoint pos, float w, float h, bool waterPlatform) : position(pos), width(w), height(h), health(15), isAWatterPlatform(waterPlatform) {}
 
     // Add collision checking method if needed
     bool Platform::checkCollision(Body& ball) {
