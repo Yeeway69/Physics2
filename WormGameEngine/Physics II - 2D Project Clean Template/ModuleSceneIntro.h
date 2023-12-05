@@ -40,14 +40,18 @@ public:
 	bool CleanUp();
 
 public:
+	bool restartLevel = false;
 	Application* app;
 
 	SDL_Texture* backgroundTexture = nullptr;
+	SDL_Texture* crownTexture = nullptr;
 	SDL_Texture* graphics;
 
 	SDL_Texture* tex_light_tiny;
 	SDL_Texture* tex_light_medium;
 	SDL_Texture* tex_light_big;
+
+
 	
 	uint fx_light_tiny;
 	uint fx_light_medium;

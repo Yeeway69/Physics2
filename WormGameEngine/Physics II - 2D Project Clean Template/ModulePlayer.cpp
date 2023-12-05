@@ -69,15 +69,35 @@ bool ModulePlayer::CleanUp()
 // Update: draw background
 update_status ModulePlayer::Update()
 {
+
 	// Hotkey to adjuct cannon ball shooting direction
 	
+	if (app->scene_intro->restartLevel) 
+	{
+		player->position.x = 200;
+		player2->position.x = 850;
+		firstalive = true;
+		secondalive = true;
+		firstplayer = true;
+		cannonAngle = 45.0f; 
+		cannonPower = 60.0f;  
+		cannonAngle2 = 135.0f; 
+		cannonPower2 = 60.0f;  
+		player1TextureUp = App->textures->Load("Assets/mortar1.png");
+		player1TextureLeft = App->textures->Load("Assets/mortar2.png");
+		player1TextureRight = App->textures->Load("Assets/mortar3.png");
+		player2TextureUp = App->textures->Load("Assets/mortarn1.png");
+		player2TextureLeft = App->textures->Load("Assets/mortarn2.png");
+		player2TextureRight = App->textures->Load("Assets/mortarn3.png");
+	}
+
 	player->position.y = SCREEN_HEIGHT - 300-(25*app->physics->firstPlayerTower.size());
 	player2->position.y = SCREEN_HEIGHT - 300 - (25 * app->physics->secondPlayerTower.size());
 
 	
 	if (firstplayer == true) 
 	{
-		if (firstalive == true) {
+		if (firstalive == true && secondalive == true) {
 			if (App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT && cannonAngle < 170)
 			{
 				cannonAngle += 1.0f;
@@ -106,7 +126,7 @@ update_status ModulePlayer::Update()
 		
 	}
 	else {
-		if (secondalive == true) {
+		if (secondalive == true && firstalive == true) {
 			if (App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT && cannonAngle2 < 170)
 			{
 				cannonAngle2 += 1.0f;
@@ -134,6 +154,8 @@ update_status ModulePlayer::Update()
 	}
 	
 
+	
+
 	const fPoint cannonPosition = { player->position.x, player->position.y - 10 };
 	const fPoint cannonPosition2 = { player2->position.x, player2->position.y - 10 };
 	
@@ -142,7 +164,7 @@ update_status ModulePlayer::Update()
 	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN &&!hasShot) // Listen for SPACEBAR press
 	{
 		if (firstplayer == true) {
-			if (firstalive == true) {
+			if (firstalive == true && secondalive == true) {
 				hasShot = true;
 				Body* cannonball = new Body();
 
@@ -163,7 +185,7 @@ update_status ModulePlayer::Update()
 			
 		}
 		else {
-			if (secondalive == true) {
+			if (secondalive == true && firstalive == true) {
 				Body* cannonball2 = new Body();
 				cannonball2->position = cannonPosition2;
 				cannonball2->velocity = { -2.0f, -4.0f }; // Initial velocity (adjust as needed)

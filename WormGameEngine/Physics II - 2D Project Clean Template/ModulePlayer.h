@@ -28,7 +28,9 @@ public:
 	float cannonPower2 = 6;  // Firing power
 	int ballused1;
 	int ballused2;
-	
+
+	bool firstalive = true;
+	bool secondalive = true;
 	
 
 private:
@@ -48,6 +50,5 @@ private:
 	int frameCooldown = 50;
 	bool hasShot = false;
 	bool firstplayer = true;
-	bool firstalive = true;
-	bool secondalive = true;
+
 };
