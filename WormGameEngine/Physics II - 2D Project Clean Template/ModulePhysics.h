@@ -157,6 +157,7 @@ public:
     int counterForRenderingTower2 = 0;
 
 private:
+    Application* app;
 
     //angle in radians
     float cannonAngle;  // Angle in degrees

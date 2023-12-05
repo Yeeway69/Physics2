@@ -9,7 +9,7 @@
 
 ModuleSceneIntro::ModuleSceneIntro(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
-	
+	this->app = app;
 	graphics = NULL;
 }
 
@@ -22,6 +22,7 @@ bool ModuleSceneIntro::Start()
 	LOG("Loading Intro assets");
 	bool ret = true;
 	backgroundTexture = App->textures->Load("Assets/fondofinal.png");
+	crownTexture = App->textures->Load("Assets/crown.png");
 	App->renderer->camera.x = App->renderer->camera.y = 0;
 
 	return ret;
@@ -39,7 +40,51 @@ bool ModuleSceneIntro::CleanUp()
 update_status ModuleSceneIntro::Update()
 {
 
-	App->renderer->Blit(backgroundTexture, 0, 0);
+	
+	if (app->player->firstalive == true && app->player->secondalive == true)
+	{
+		restartLevel = false;
+		App->renderer->Blit(backgroundTexture, 0, 0);
+	} 
+	else
+	{
+		//Render loose screen
+		if (app->player->firstalive == true) {
+			//Player 1 winScreen
+			app->physics->score1 = app->physics->firstPlayerTower.size();
+			if (app->physics->score1 >=6)
+			{
+				App->renderer->Blit(crownTexture, 700, 300);
+			}
+			if (app->physics->score1 >= 4)
+			{
+				App->renderer->Blit(crownTexture, 500, 400);
+			}
+			App->renderer->Blit(crownTexture, 300, 300);
+		}
+		else
+		{
+			//Player 2 winScreen
+			app->physics->score2 = app->physics->firstPlayerTower.size();
+			if (app->physics->score1 >= 6)
+			{
+				App->renderer->Blit(crownTexture, 700, 300);
+			}
+			if (app->physics->score1 >= 4)
+			{
+				App->renderer->Blit(crownTexture, 500, 400);
+			}
+			App->renderer->Blit(crownTexture, 300, 300);
+		}
+
+		if (App->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN) 
+		{
+			restartLevel = true;
+		}
+	}
+
+	
+
 
 	// Render platforms
 	const std::list<Platform>& platforms = App->physics->GetPlatforms();

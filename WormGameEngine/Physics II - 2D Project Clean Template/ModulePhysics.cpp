@@ -26,6 +26,7 @@ using namespace std;
 
 ModulePhysics::ModulePhysics(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
+	this->app = app;
 	debug = true;
 	// Example: Initialize a platform body (this is just for demonstration and can be adapted as needed)
 	int width, height;
@@ -55,8 +56,8 @@ bool ModulePhysics::Start()
 	LOG("Creating Physics 2D environment");
 
 	// Example of adding platforms
-	platforms.push_back(Platform(fPoint(300, 400), 180, 70, true)); // Position (100, 300), Width 200, Height 30, is a water platform true
-	platforms.push_back(Platform(fPoint(800, 100), 150, 20, false)); // Another platform
+	platforms.push_back(Platform(fPoint(300, 400), 180, 70, true)); // Position (100, 300), Width 200, Height 30, is a water platform true Esta es la del agua
+	//platforms.push_back(Platform(fPoint(800, 100), 150, 20, false)); // Another platform
 	platforms.push_back(Platform(fPoint(500, 300), 100, 20, false)); // Another platform
 	platforms.push_back(Platform(fPoint(100, 100), 100, 20, false)); // Another platform
 	platforms.push_back(Platform(fPoint(900, 200), 100, 20, false)); // Another platform
@@ -69,8 +70,9 @@ bool ModulePhysics::Start()
 	platforms.push_back(Platform(fPoint(600, 150), 100, 20, false)); // Another platform
 
 	
-	
-
+	//1024 758
+	//358 desde abajo
+	//x: 150 y:200
 	firstPlayerTower.push_back(Platform(fPoint(100, 275), 150, 25, false)); // Another platform
 	firstPlayerTower.push_back(Platform(fPoint(100, 300), 150, 25, false)); // Another platform
 	firstPlayerTower.push_back(Platform(fPoint(100, 325), 150, 25, false)); // Another platform
@@ -137,6 +139,49 @@ void ModulePhysics::UpdateWindowTitle()
 
 update_status ModulePhysics::PreUpdate()
 {
+	if (app->scene_intro->restartLevel) {
+		platforms.clear();
+		platforms.push_back(Platform(fPoint(300, 400), 180, 70, true)); 
+		platforms.push_back(Platform(fPoint(800, 100), 150, 20, false));
+		platforms.push_back(Platform(fPoint(500, 300), 100, 20, false));
+		platforms.push_back(Platform(fPoint(100, 100), 100, 20, false));
+		platforms.push_back(Platform(fPoint(900, 200), 100, 20, false));
+		platforms.push_back(Platform(fPoint(200, 150), 100, 20, false));
+		platforms.push_back(Platform(fPoint(700, 400), 100, 20, false));
+		platforms.push_back(Platform(fPoint(200, 250), 100, 20, false));
+		platforms.push_back(Platform(fPoint(600, 150), 100, 20, false));
+		platforms.push_back(Platform(fPoint(400, 300), 100, 20, false));
+		platforms.push_back(Platform(fPoint(200, 250), 100, 20, false));
+		platforms.push_back(Platform(fPoint(600, 150), 100, 20, false));
+
+		firstPlayerTower.clear();
+		firstPlayerTower.push_back(Platform(fPoint(100, 275), 150, 25, false)); // Another platform
+		firstPlayerTower.push_back(Platform(fPoint(100, 300), 150, 25, false)); // Another platform
+		firstPlayerTower.push_back(Platform(fPoint(100, 325), 150, 25, false)); // Another platform
+		firstPlayerTower.push_back(Platform(fPoint(100, 350), 150, 25, false)); // Another platform
+		firstPlayerTower.push_back(Platform(fPoint(100, 375), 150, 25, false)); // Another platform
+		firstPlayerTower.push_back(Platform(fPoint(100, 400), 150, 25, false)); // Another platform
+		firstPlayerTower.push_back(Platform(fPoint(100, 425), 150, 25, false)); // Another platform
+		firstPlayerTower.push_back(Platform(fPoint(100, 450), 150, 25, false)); // Another platform
+
+		secondPlayerTower.clear();
+		secondPlayerTower.push_back(Platform(fPoint(800, 275), 150, 25, false)); // Another platform
+		secondPlayerTower.push_back(Platform(fPoint(800, 300), 150, 25, false)); // Another platform
+		secondPlayerTower.push_back(Platform(fPoint(800, 325), 150, 25, false)); // Another platform
+		secondPlayerTower.push_back(Platform(fPoint(800, 350), 150, 25, false)); // Another platform
+		secondPlayerTower.push_back(Platform(fPoint(800, 375), 150, 25, false)); // Another platform
+		secondPlayerTower.push_back(Platform(fPoint(800, 400), 150, 25, false)); // Another platform
+		secondPlayerTower.push_back(Platform(fPoint(800, 425), 150, 25, false)); // Another platform
+		secondPlayerTower.push_back(Platform(fPoint(800, 450), 150, 25, false)); // Another platform
+
+		towerlive1 = 8;
+		towerlive2 = 8;
+		score1 = 0;
+		score2 = 0;
+	}
+
+
+
 	//Calculate Frame Time:
 	currentFrameTime = SDL_GetTicks() / 1000.0f; // Convert milliseconds to seconds
 	float deltaTime = currentFrameTime - lastFrameTime;
@@ -147,6 +192,7 @@ update_status ModulePhysics::PreUpdate()
 	deltaTime = std::min(deltaTime, maxDeltaTime);
 
 	bool isBallOnPlatform = false;
+
 
 
 	// Update platforms
@@ -181,7 +227,7 @@ update_status ModulePhysics::PreUpdate()
 				firstPlayerTower.pop_front();
 				bodies.remove(body);
 				goto endLoop;
-				score2++;
+				//score2++;
 				towerlive1--;
 			}
 		}
@@ -198,7 +244,7 @@ update_status ModulePhysics::PreUpdate()
 				secondPlayerTower.pop_front();
 				bodies.remove(body);
 				goto endLoop2;
-				score1++;
+				//score1++;
 				towerlive2--;
 			}
 		}
@@ -364,8 +410,8 @@ update_status ModulePhysics::PreUpdate()
 			// Check for collisions with the ground
 			if (body->position.y >= height - 300) // Assuming 10 is the radius of the cannonball
 			{
-				body->velocity.y = -body->elasticity * body->velocity.y; // Reflect and reduce vertical velocity
-				body->position.y = height - 300; // Reset position to be just on the ground
+				bodies.remove(body);
+				break;
 			}
 			//Friction
 			if (body->position.y >= height - 10)
@@ -418,29 +464,29 @@ update_status ModulePhysics::PostUpdate()
 		towerlive1 = 0;
 		break;
 	case 1:
-		App->renderer->Blit(towerTexture1, 100, 0);
+		App->renderer->Blit(towerTexture1, 35, 250);
 			
 		break;
 	case 2:
-		App->renderer->Blit(towerTexture2, 100, 0);
+		App->renderer->Blit(towerTexture2, 35, 250);
 		break;
 	case 3:
-		App->renderer->Blit(towerTexture3, 100, 0);
+		App->renderer->Blit(towerTexture3, 35, 250);
 		break;
 	case 4:
-		App->renderer->Blit(towerTexture4, 100, 0);
+		App->renderer->Blit(towerTexture4, 35, 250);
 		break;
 	case 5:
-		App->renderer->Blit(towerTexture5, 100, 0);
+		App->renderer->Blit(towerTexture5, 35, 250);
 		break;
 	case 6:
-		App->renderer->Blit(towerTexture6, 100, 0);
+		App->renderer->Blit(towerTexture6, 35, 250);
 		break;
 	case 7:
-		App->renderer->Blit(towerTexture7, 100, 0);
+		App->renderer->Blit(towerTexture7, 35, 250);
 		break;
 	case 8:
-		App->renderer->Blit(towerTexture8, 100, 0);
+		App->renderer->Blit(towerTexture8, 35, 250);
 		break;
 	default:
 		break;
