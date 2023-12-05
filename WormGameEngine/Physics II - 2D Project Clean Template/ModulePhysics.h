@@ -156,6 +156,8 @@ public:
     int counterForRenderingTower = 0;
     int counterForRenderingTower2 = 0;
 
+    bool debug;
+
 private:
     Application* app;
 
@@ -168,7 +170,7 @@ private:
 
     float groundwidth; // X coordinate of the ground
 
-    bool debug;
+  
 
     std::list<Platform> platforms; // List of all platforms
 
@@ -183,16 +185,6 @@ private:
     };
 
     IntegrationScheme currentScheme;
-
-    SDL_Texture* platformTexture;
-    SDL_Texture* towerTexture1;
-    SDL_Texture* towerTexture2;
-    SDL_Texture* towerTexture3;
-    SDL_Texture* towerTexture4;
-    SDL_Texture* towerTexture5;
-    SDL_Texture* towerTexture6;
-    SDL_Texture* towerTexture7;
-    SDL_Texture* towerTexture8;
 
 
 };

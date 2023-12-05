@@ -442,21 +442,44 @@ update_status ModulePhysics::PostUpdate()
 	//draw the ground with a line
 	int width, height;
 	App->window->GetWindowSize(width, height);
-	App->renderer->DrawLine(0, height - 290, width, height - 300, 255, 255, 255);
+	if (debug)
+	{
+		App->renderer->DrawLine(0, height - 290, width, height - 300, 255, 255, 255,255);
+	}
+	else
+	{
+		App->renderer->DrawLine(0, height - 290, width, height - 300, 255, 255, 255, 0);
+	}
+	
 
 	const std::list<Platform>& tower1 = App->physics->GetTower1();
 	for (const Platform& platform : tower1) 
 	{
 			SDL_Rect rect = { static_cast<int>(platform.position.x), static_cast<int>(platform.position.y),
 							  static_cast<int>(platform.width), static_cast<int>(platform.height) };
-			App->renderer->DrawQuad(rect, 255, 255, 255); // Red color for platforms
+			if (debug)
+			{
+				App->renderer->DrawQuad(rect, 255, 255, 255); // Red color for platforms
+			}
+			else
+			{
+				App->renderer->DrawQuad(rect, 255, 255, 255, 0); // Red color for platforms
+
+			}
 	}
 	const std::list<Platform>& tower2 = App->physics->GetTower2();
 	for (const Platform& platform : tower2) 
 	{
 			SDL_Rect rect = { static_cast<int>(platform.position.x), static_cast<int>(platform.position.y),
 							  static_cast<int>(platform.width), static_cast<int>(platform.height) };
-			App->renderer->DrawQuad(rect, 255, 255, 255); // Red color for platforms
+			if (debug) 
+			{
+				App->renderer->DrawQuad(rect, 255, 255, 255); // Red color for platforms
+			}
+			else
+			{
+				App->renderer->DrawQuad(rect, 255, 255, 255,0); // Red color for platforms
+			}
 	}
 
 	switch (tower1.size())
@@ -501,28 +524,28 @@ update_status ModulePhysics::PostUpdate()
 		towerlive2 = 0;
 		break;
 	case 1:
-		App->renderer->Blit(towerTexture1, 800, 0);
+		App->renderer->Blit(towerTexture1, 735, 250);
 		break;
 	case 2:
-		App->renderer->Blit(towerTexture2, 800, 0);
+		App->renderer->Blit(towerTexture2, 735, 250);
 		break;
 	case 3:
-		App->renderer->Blit(towerTexture3, 800, 0);
+		App->renderer->Blit(towerTexture3, 735, 250);
 		break;
 	case 4:
-		App->renderer->Blit(towerTexture4, 800, 0);
+		App->renderer->Blit(towerTexture4, 735, 250);
 		break;
 	case 5:
-		App->renderer->Blit(towerTexture5, 800, 0);
+		App->renderer->Blit(towerTexture5, 735, 250);
 		break;
 	case 6:
-		App->renderer->Blit(towerTexture6, 800, 0);
+		App->renderer->Blit(towerTexture6, 735, 250);
 		break;
 	case 7:
-		App->renderer->Blit(towerTexture7, 800, 0);
+		App->renderer->Blit(towerTexture7, 735, 250);
 		break;
 	case 8:
-		App->renderer->Blit(towerTexture8, 800, 0);
+		App->renderer->Blit(towerTexture8, 735, 250);
 		break;
 	default:
 		break;

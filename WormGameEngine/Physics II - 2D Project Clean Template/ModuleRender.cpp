@@ -153,7 +153,7 @@ bool ModuleRender::DrawQuad(const SDL_Rect& rect, Uint8 r, Uint8 g, Uint8 b, Uin
 		rec.h *= SCREEN_SIZE;
 	}
 
-	int result = (filled) ? SDL_RenderFillRect(renderer, &rec) : SDL_RenderDrawRect(renderer, &rec);
+	int result =  SDL_RenderDrawRect(renderer, &rec);
 	
 	if(result != 0)
 	{

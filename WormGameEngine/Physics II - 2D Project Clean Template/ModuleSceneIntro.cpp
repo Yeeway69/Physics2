@@ -87,12 +87,21 @@ update_status ModuleSceneIntro::Update()
 
 
 	// Render platforms
+	
 	const std::list<Platform>& platforms = App->physics->GetPlatforms();
 	for (const Platform& platform : platforms) {
 		if (platform.health > 0) {
 			SDL_Rect rect = { static_cast<int>(platform.position.x), static_cast<int>(platform.position.y),
 							  static_cast<int>(platform.width), static_cast<int>(platform.height) };
-			App->renderer->DrawQuad(rect, 255, 0, 0, 255); // Red color for platforms
+			if (debug) 
+			{
+				App->renderer->DrawQuad(rect, 255, 0, 0, 255); // Red color for platforms
+			}
+			else 
+			{
+
+			}
+			
 		}
 	}
 
