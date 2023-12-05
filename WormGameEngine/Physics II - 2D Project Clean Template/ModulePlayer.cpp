@@ -116,10 +116,10 @@ update_status ModulePlayer::Update()
 			}
 
 
-			if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT && player->position.x > 110) {
+			if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT && player->position.x > 120) {
 				player->position.x -= 3;
 			}
-			if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT && player->position.x < 240) {
+			if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT && player->position.x < 230) {
 				player->position.x += 3;
 			}
 		}
@@ -143,10 +143,10 @@ update_status ModulePlayer::Update()
 			{
 				cannonPower2 -= 0.5f;
 			}
-			if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT && player2->position.x > 810) {
+			if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT && player2->position.x > 820) {
 				player2->position.x -= 3;
 			}
-			if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT && player2->position.x < 940) {
+			if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT && player2->position.x < 930) {
 				player2->position.x += 3;
 			}
 		}
@@ -265,28 +265,28 @@ update_status ModulePlayer::Update()
 	float radianAngle = DEGTORAD(cannonAngle);
 	if (cosf(radianAngle)>0.4f)
 	{
-		App->renderer->Blit(player1TextureRight, player->position.x - 50, player->position.y - 50);
+		App->renderer->Blit(player1TextureRight, player->position.x - 80, player->position.y - 115);
 	}
 	else if (cosf(radianAngle) < -0.4f) 
 	{
-		App->renderer->Blit(player1TextureLeft, player->position.x - 50, player->position.y - 50);
+		App->renderer->Blit(player1TextureLeft, player->position.x - 80, player->position.y - 115);
 	}
 	else
 	{
-		App->renderer->Blit(player1TextureUp, player->position.x-50, player->position.y-50);
+		App->renderer->Blit(player1TextureUp, player->position.x- 80, player->position.y- 115);
 	}
 	float radianAngle2 = DEGTORAD(cannonAngle2);
 	if (cosf(radianAngle2) > 0.4f)
 	{
-		App->renderer->Blit(player2TextureLeft, player2->position.x - 40, player2->position.y - 50);
+		App->renderer->Blit(player2TextureLeft, player2->position.x - 80, player2->position.y - 115);
 	}
 	else if (cosf(radianAngle2) < -0.4f)
 	{
-		App->renderer->Blit(player2TextureRight, player2->position.x - 40, player2->position.y - 50);
+		App->renderer->Blit(player2TextureRight, player2->position.x - 80, player2->position.y - 115);
 	}
 	else
 	{
-		App->renderer->Blit(player2TextureUp, player2->position.x - 40, player2->position.y - 50);
+		App->renderer->Blit(player2TextureUp, player2->position.x - 80, player2->position.y - 115);
 	}
 
 	return UPDATE_CONTINUE;

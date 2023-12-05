@@ -156,6 +156,9 @@ public:
     int counterForRenderingTower = 0;
     int counterForRenderingTower2 = 0;
 
+
+    bool debug;
+
 private:
     Application* app;
 
@@ -168,7 +171,6 @@ private:
 
     float groundwidth; // X coordinate of the ground
 
-    bool debug;
 
     std::list<Platform> platforms; // List of all platforms
 
