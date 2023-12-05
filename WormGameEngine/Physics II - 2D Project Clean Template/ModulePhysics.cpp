@@ -226,9 +226,10 @@ update_status ModulePhysics::PreUpdate()
 					// Additional logic after collision (if necessary)
 				firstPlayerTower.pop_front();
 				bodies.remove(body);
-				goto endLoop;
-				//score2++;
+				score2++;
 				towerlive1--;
+				goto endLoop;
+				
 			}
 		}
 	}
@@ -243,9 +244,10 @@ update_status ModulePhysics::PreUpdate()
 					// Additional logic after collision (if necessary)
 				secondPlayerTower.pop_front();
 				bodies.remove(body);
-				goto endLoop2;
-				//score1++;
+				score1++;
 				towerlive2--;
+				goto endLoop2;
+				
 			}
 		}
 	}
@@ -580,7 +582,7 @@ update_status ModulePhysics::PostUpdate()
 		{
 			
 			Body* body = *it;
-			App->renderer->DrawCircle(body->position.x, body->position.y, 10, 255, 0, 0);
+			App->renderer->DrawCircle(body->position.x, body->position.y, 20, 255, 0, 0);
 
 			
 		}

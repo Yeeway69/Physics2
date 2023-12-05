@@ -54,27 +54,27 @@ update_status ModuleSceneIntro::Update()
 			app->physics->score1 = app->physics->firstPlayerTower.size();
 			if (app->physics->score1 >=6)
 			{
-				App->renderer->Blit(crownTexture, 700, 300);
+				App->renderer->Blit(crownTexture, 600, 300);
 			}
 			if (app->physics->score1 >= 4)
 			{
-				App->renderer->Blit(crownTexture, 500, 400);
+				App->renderer->Blit(crownTexture, 500, 200);
 			}
-			App->renderer->Blit(crownTexture, 300, 300);
+			App->renderer->Blit(crownTexture, 400, 300);
 		}
 		else
 		{
 			//Player 2 winScreen
-			app->physics->score2 = app->physics->firstPlayerTower.size();
-			if (app->physics->score1 >= 6)
+			app->physics->score2 = app->physics->secondPlayerTower.size();
+			if (app->physics->score2 >= 6)
 			{
-				App->renderer->Blit(crownTexture, 700, 300);
+				App->renderer->Blit(crownTexture, 600, 300);
 			}
-			if (app->physics->score1 >= 4)
+			if (app->physics->score2 >= 4)
 			{
-				App->renderer->Blit(crownTexture, 500, 400);
+				App->renderer->Blit(crownTexture, 500, 250);
 			}
-			App->renderer->Blit(crownTexture, 300, 300);
+			App->renderer->Blit(crownTexture, 400, 300);
 		}
 
 		if (App->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN) 
