@@ -23,6 +23,11 @@ bool ModuleSceneIntro::Start()
 	bool ret = true;
 	backgroundTexture = App->textures->Load("Assets/fondofinal.png");
 	crownTexture = App->textures->Load("Assets/crown.png");
+	player1WinsTexture = App->textures->Load("Assets/ScreenEnding1.png");
+	player2WinsTexture = App->textures->Load("Assets/ScreenEnding2.png");
+	platformTexture = App->textures->Load("Assets/plataforma.png");
+	waterTexture = App->textures->Load("Assets/water.png");
+	crownTexture = App->textures->Load("Assets/crown.png");
 	App->renderer->camera.x = App->renderer->camera.y = 0;
 
 	return ret;
@@ -51,6 +56,7 @@ update_status ModuleSceneIntro::Update()
 		//Render loose screen
 		if (app->player->firstalive == true) {
 			//Player 1 winScreen
+			App->renderer->Blit(player1WinsTexture, 0, 0);
 			app->physics->score1 = app->physics->firstPlayerTower.size();
 			if (app->physics->score1 >=6)
 			{
@@ -65,6 +71,8 @@ update_status ModuleSceneIntro::Update()
 		else
 		{
 			//Player 2 winScreen
+			App->renderer->Blit(player2WinsTexture, 0, 0);
+
 			app->physics->score2 = app->physics->secondPlayerTower.size();
 			if (app->physics->score2 >= 6)
 			{
@@ -99,8 +107,19 @@ update_status ModuleSceneIntro::Update()
 			}
 			else 
 			{
+				App->renderer->DrawQuad(rect, 255, 0, 0, 0); // Red color for platforms
+			}
+			if (!platform.isAWatterPlatform) 
+			{
+				App->renderer->Blit(platformTexture, platform.position.x - 25, platform.position.y - 67);
 
 			}
+			else
+			{
+				App->renderer->Blit(waterTexture, platform.position.x, platform.position.y);
+
+			}
+
 			
 		}
 	}

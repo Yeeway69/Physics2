@@ -44,6 +44,10 @@ public:
 	Application* app;
 
 	SDL_Texture* backgroundTexture = nullptr;
+	SDL_Texture* player1WinsTexture = nullptr;
+	SDL_Texture* player2WinsTexture = nullptr;
+	SDL_Texture* platformTexture = nullptr;
+	SDL_Texture* waterTexture = nullptr;
 	SDL_Texture* crownTexture = nullptr;
 	SDL_Texture* graphics;
 

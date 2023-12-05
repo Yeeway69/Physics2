@@ -196,5 +196,7 @@ private:
     SDL_Texture* towerTexture7;
     SDL_Texture* towerTexture8;
 
+    SDL_Texture* ballTexture;
+
 
 };

@@ -40,7 +40,7 @@ bool ModulePlayer::Start()
 	player->mass = 1.0f; // arbitrary mass
 	player->elasticity = 0.5f; // some bounce
 	player->friction = 0.1f; // some friction
-	app->physics->bodies.push_back(player);
+	//app->physics->bodies.push_back(player);
 
 	//firing
 	cannonAngle = 45.0f;  // Default to 45 degrees
@@ -56,7 +56,7 @@ bool ModulePlayer::Start()
 	player2->friction = 0.1f; // some friction
 	cannonAngle2 = 135.0f;  // Default to 45 degrees
 	cannonPower2 = 60.0f;   // Default power
-	app->physics->bodies.push_back(player2);
+	//app->physics->bodies.push_back(player2);
 	return true;
 }
 

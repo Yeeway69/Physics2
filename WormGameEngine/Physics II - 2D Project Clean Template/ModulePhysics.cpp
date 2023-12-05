@@ -50,6 +50,7 @@ bool ModulePhysics::Start()
 	towerTexture6 = App->textures->Load("Assets/Tower_6.png");
 	towerTexture7 = App->textures->Load("Assets/Tower_7.png");
 	towerTexture8 = App->textures->Load("Assets/Tower_8.png");
+	ballTexture = App->textures->Load("Assets/bola.png");
 	towerlive1 = 8;
 	towerlive2 = 8;
 
@@ -599,17 +600,21 @@ update_status ModulePhysics::PostUpdate()
 		UpdateWindowTitle();
 	}
 
-	if (debug)
+	
+	for (list<Body*>::iterator it = bodies.begin(); it != bodies.end(); ++it)
 	{
-		for (list<Body*>::iterator it = bodies.begin(); it != bodies.end(); ++it)
+			
+		Body* body = *it;
+		App->renderer->Blit(ballTexture, body->position.x-40, body->position.y-50);
+		
+		if (debug)
 		{
-			
-			Body* body = *it;
 			App->renderer->DrawCircle(body->position.x, body->position.y, 20, 255, 0, 0);
-
-			
 		}
+			
 	}
+	
+
 
 	return UPDATE_CONTINUE;
 }
