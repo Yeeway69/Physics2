@@ -18,6 +18,8 @@ ModulePlayer::~ModulePlayer()
 // Load assets
 bool ModulePlayer::Start()
 {
+	char lookupTable[] = { "! @,_./0123456789$;< ?abcdefghijklmnopqrstuvwxyz" };
+	scoreFont = App->fonts->Load("Assets/textocosa4.png", lookupTable, 2);
 
 	ballused1 = 0;
 	ballused2 = 0;
@@ -288,6 +290,17 @@ update_status ModulePlayer::Update()
 	{
 		App->renderer->Blit(player2TextureUp, player2->position.x - 80, player2->position.y - 115);
 	}
+	sprintf_s(scoreText, 10, "%7d", score);
+	sprintf_s(highscoreText, 10, "%7d", highscore);
+	sprintf_s(livesText, 10, "%7d", lives);
+
+	//App->fonts->BlitText(1, 15, scoreFont, scoreText);
+
+	//App->fonts->BlitText(2, 2, scoreFont, "player1");
+	App->fonts->BlitText(2, 2, scoreFont, "highscore");
+	/*App->fonts->BlitText(96, 15, scoreFont, highscoreText);
+	App->fonts->BlitText(180, 2, scoreFont, "lives x ");
+	App->fonts->BlitText(192, 2, scoreFont, livesText);*/
 
 	return UPDATE_CONTINUE;
 }

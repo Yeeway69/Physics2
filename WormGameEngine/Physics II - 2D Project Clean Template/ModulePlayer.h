@@ -50,5 +50,12 @@ private:
 	int frameCooldown = 50;
 	bool hasShot = false;
 	bool firstplayer = true;
+	uint score = 000;
+	uint highscore = 000;
+	uint lives = 3;
+	int scoreFont = -1;
+	char livesText[10] = { "\0" };
+	char scoreText[10] = { "\0" };
+	char highscoreText[10] = { "\0" };
 
 };

@@ -11,7 +11,10 @@ public:
 
 	bool Init();
 	bool CleanUp();
-
+	void GetTextureSize(const SDL_Texture* texture, uint& width, uint& height)const;
+	
+		
+	
 	SDL_Texture* const Load(const char* path);
 	void Unload(SDL_Texture* texture);
 
