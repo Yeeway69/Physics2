@@ -21,13 +21,16 @@ bool ModuleSceneIntro::Start()
 {
 	LOG("Loading Intro assets");
 	bool ret = true;
+
+	//Load Textures
 	backgroundTexture = App->textures->Load("Assets/fondofinal.png");
 	crownTexture = App->textures->Load("Assets/crown.png");
 	player1WinsTexture = App->textures->Load("Assets/ScreenEnding1.png");
 	player2WinsTexture = App->textures->Load("Assets/ScreenEnding2.png");
 	platformTexture = App->textures->Load("Assets/plataforma.png");
 	waterTexture = App->textures->Load("Assets/water.png");
-	crownTexture = App->textures->Load("Assets/crown.png");
+
+
 	App->renderer->camera.x = App->renderer->camera.y = 0;
 
 	return ret;
@@ -50,23 +53,53 @@ update_status ModuleSceneIntro::Update()
 	{
 		restartLevel = false;
 		App->renderer->Blit(backgroundTexture, 0, 0);
+		//Render Platforms
+		const std::list<Platform>& platforms = App->physics->GetPlatforms();
+		for (const Platform& platform : platforms) {
+			if (platform.health > 0) {
+				SDL_Rect rect = { static_cast<int>(platform.position.x), static_cast<int>(platform.position.y),
+								  static_cast<int>(platform.width), static_cast<int>(platform.height) };
+				if (app->physics->debug)
+				{
+					App->renderer->DrawQuad(rect, 255, 0, 0, 255); // Red color for platforms
+				}
+				else
+				{
+					App->renderer->DrawQuad(rect, 255, 0, 0, 0); // Red color for platforms
+				}
+				if (!platform.isAWatterPlatform)
+				{
+					App->renderer->Blit(platformTexture, platform.position.x - 25, platform.position.y - 67);
+
+				}
+				else
+				{
+					App->renderer->Blit(waterTexture, platform.position.x, platform.position.y);
+
+				}
+
+
+			}
+		}
 	} 
 	else
 	{
 		//Render loose screen
-		if (app->player->firstalive == true) {
+		if (app->player->firstalive == true) 
+		{
 			//Player 1 winScreen
 			App->renderer->Blit(player1WinsTexture, 0, 0);
 			app->physics->score1 = app->physics->firstPlayerTower.size();
 			if (app->physics->score1 >=6)
 			{
-				App->renderer->Blit(crownTexture, 600, 300);
+				App->renderer->Blit(crownTexture, 850, 450);
 			}
 			if (app->physics->score1 >= 4)
 			{
-				App->renderer->Blit(crownTexture, 500, 200);
+				App->renderer->Blit(crownTexture, 700, 400);
 			}
-			App->renderer->Blit(crownTexture, 400, 300);
+			App->renderer->Blit(crownTexture, 550, 450);
+			
 		}
 		else
 		{
@@ -76,13 +109,13 @@ update_status ModuleSceneIntro::Update()
 			app->physics->score2 = app->physics->secondPlayerTower.size();
 			if (app->physics->score2 >= 6)
 			{
-				App->renderer->Blit(crownTexture, 600, 300);
+				App->renderer->Blit(crownTexture, 350 , 450);
 			}
 			if (app->physics->score2 >= 4)
 			{
-				App->renderer->Blit(crownTexture, 500, 250);
+				App->renderer->Blit(crownTexture, 200, 400);
 			}
-			App->renderer->Blit(crownTexture, 400, 300);
+			App->renderer->Blit(crownTexture, 50, 450);
 		}
 
 		if (App->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN) 
@@ -96,33 +129,7 @@ update_status ModuleSceneIntro::Update()
 
 	// Render platforms
 	
-	const std::list<Platform>& platforms = App->physics->GetPlatforms();
-	for (const Platform& platform : platforms) {
-		if (platform.health > 0) {
-			SDL_Rect rect = { static_cast<int>(platform.position.x), static_cast<int>(platform.position.y),
-							  static_cast<int>(platform.width), static_cast<int>(platform.height) };
-			if (app->physics->debug) 
-			{
-				App->renderer->DrawQuad(rect, 255, 0, 0, 255); // Red color for platforms
-			}
-			else 
-			{
-				App->renderer->DrawQuad(rect, 255, 0, 0, 0); // Red color for platforms
-			}
-			if (!platform.isAWatterPlatform) 
-			{
-				App->renderer->Blit(platformTexture, platform.position.x - 25, platform.position.y - 67);
-
-			}
-			else
-			{
-				App->renderer->Blit(waterTexture, platform.position.x, platform.position.y);
-
-			}
-
-			
-		}
-	}
+	
 
 	//// Debug: Render platform positions
 	//for (const Platform& platform : App->physics->GetPlatforms()) {

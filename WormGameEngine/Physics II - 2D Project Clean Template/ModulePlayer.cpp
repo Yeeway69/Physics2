@@ -223,7 +223,7 @@ update_status ModulePlayer::Update()
 	else
 	{
 		if (firstplayer == true) {
-			if (firstalive == true) {
+			if (firstalive == true && secondalive == true) {
 				float radianAngle = DEGTORAD(-cannonAngle);
 				int endX = player->position.x + static_cast<int>(100 * std::cosf(radianAngle));
 				int endY = player->position.y + static_cast<int>(100 * std::sinf(radianAngle));
@@ -233,7 +233,7 @@ update_status ModulePlayer::Update()
 			
 		}
 		else {
-			if (secondalive==true) {
+			if (firstalive == true && secondalive == true) {
 				float radianAngle = DEGTORAD(-cannonAngle2);
 				int endX = player2->position.x + static_cast<int>(100 * std::cosf(radianAngle));
 				int endY = player2->position.y + static_cast<int>(100 * std::sinf(radianAngle));
@@ -245,51 +245,59 @@ update_status ModulePlayer::Update()
 		
 	}
 	
-	if (app->physics->towerlive1 == 0) {
+	if (app->physics->towerlive1 == 0 || app->physics->towerlive2 == 0) 
+	{
 		player1TextureUp = App->textures->Load("Assets/.png");
 		player1TextureLeft = App->textures->Load("Assets/.png");
 		player1TextureRight = App->textures->Load("Assets/.png");
-		firstalive = false;
-	}
-
-	if (app->physics->towerlive2 == 0) {
 		player2TextureUp = App->textures->Load("Assets/.png");
 		player2TextureLeft = App->textures->Load("Assets/.png");
 		player2TextureRight = App->textures->Load("Assets/.png");
-		secondalive = false;
+		if (app->physics->towerlive1 == 0) 
+		{
+			firstalive = false;
+		}
+		else
+		{
+			secondalive = false;
+		}
 	}
 
-	//This is the power var 
-	App->renderer->DrawGrowingRectangle(SCREEN_WIDTH*0.05f, SCREEN_HEIGHT/2, cannonPower, 0, 152, 70,255, true);
-	App->renderer->DrawGrowingRectangle(SCREEN_WIDTH * 0.97f, SCREEN_HEIGHT / 2, cannonPower2, 0, 152, 70, 255, true);
+	if (app->player->firstalive == true && app->player->secondalive == true)
+	{
+		//This is the power var 
+		App->renderer->DrawGrowingRectangle(SCREEN_WIDTH * 0.05f, SCREEN_HEIGHT / 2, cannonPower, 0, 152, 70, 255, true);
+		App->renderer->DrawGrowingRectangle(SCREEN_WIDTH * 0.97f, SCREEN_HEIGHT / 2, cannonPower2, 0, 152, 70, 255, true);
 
-	//rendering
-	float radianAngle = DEGTORAD(cannonAngle);
-	if (cosf(radianAngle)>0.4f)
-	{
-		App->renderer->Blit(player1TextureRight, player->position.x - 80, player->position.y - 115);
+		//rendering
+		float radianAngle = DEGTORAD(cannonAngle);
+		if (cosf(radianAngle) > 0.4f)
+		{
+			App->renderer->Blit(player1TextureRight, player->position.x - 80, player->position.y - 115);
+		}
+		else if (cosf(radianAngle) < -0.4f)
+		{
+			App->renderer->Blit(player1TextureLeft, player->position.x - 80, player->position.y - 115);
+		}
+		else
+		{
+			App->renderer->Blit(player1TextureUp, player->position.x - 80, player->position.y - 115);
+		}
+		float radianAngle2 = DEGTORAD(cannonAngle2);
+		if (cosf(radianAngle2) > 0.4f)
+		{
+			App->renderer->Blit(player2TextureLeft, player2->position.x - 80, player2->position.y - 115);
+		}
+		else if (cosf(radianAngle2) < -0.4f)
+		{
+			App->renderer->Blit(player2TextureRight, player2->position.x - 80, player2->position.y - 115);
+		}
+		else
+		{
+			App->renderer->Blit(player2TextureUp, player2->position.x - 80, player2->position.y - 115);
+		}
 	}
-	else if (cosf(radianAngle) < -0.4f) 
-	{
-		App->renderer->Blit(player1TextureLeft, player->position.x - 80, player->position.y - 115);
-	}
-	else
-	{
-		App->renderer->Blit(player1TextureUp, player->position.x- 80, player->position.y- 115);
-	}
-	float radianAngle2 = DEGTORAD(cannonAngle2);
-	if (cosf(radianAngle2) > 0.4f)
-	{
-		App->renderer->Blit(player2TextureLeft, player2->position.x - 80, player2->position.y - 115);
-	}
-	else if (cosf(radianAngle2) < -0.4f)
-	{
-		App->renderer->Blit(player2TextureRight, player2->position.x - 80, player2->position.y - 115);
-	}
-	else
-	{
-		App->renderer->Blit(player2TextureUp, player2->position.x - 80, player2->position.y - 115);
-	}
+
 	sprintf_s(scoreText, 10, "%7d", score);
 	sprintf_s(highscoreText, 10, "%7d", highscore);
 	sprintf_s(livesText, 10, "%7d", lives);
