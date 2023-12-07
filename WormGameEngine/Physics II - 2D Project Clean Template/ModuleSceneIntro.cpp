@@ -30,7 +30,6 @@ bool ModuleSceneIntro::Start()
 	platformTexture = App->textures->Load("Assets/plataforma.png");
 	waterTexture = App->textures->Load("Assets/water.png");
 
-
 	App->renderer->camera.x = App->renderer->camera.y = 0;
 
 	return ret;
@@ -47,12 +46,14 @@ bool ModuleSceneIntro::CleanUp()
 // Update: draw background
 update_status ModuleSceneIntro::Update()
 {
+	App->audio->PlayMusic("Assets/music.wav", 0.0f);
 
 	
 	if (app->player->firstalive == true && app->player->secondalive == true)
 	{
 		restartLevel = false;
 		App->renderer->Blit(backgroundTexture, 0, 0);
+	
 		//Render Platforms
 		const std::list<Platform>& platforms = App->physics->GetPlatforms();
 		for (const Platform& platform : platforms) {
