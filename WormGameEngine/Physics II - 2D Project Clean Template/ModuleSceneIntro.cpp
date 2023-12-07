@@ -35,6 +35,8 @@ bool ModuleSceneIntro::Start()
 	platformTexture = App->textures->Load("Assets/plataforma.png");
 	waterTexture = App->textures->Load("Assets/water.png");
 
+	App->audio->PlayMusic("Assets/music.wav", 0.0f);
+
 	App->renderer->camera.x = App->renderer->camera.y = 0;
 
 	return ret;
@@ -51,8 +53,6 @@ bool ModuleSceneIntro::CleanUp()
 // Update: draw background
 update_status ModuleSceneIntro::Update()
 {
-	App->audio->PlayMusic("Assets/music.wav", 0.0f);
-
 	
 	if (app->player->firstalive == true && app->player->secondalive == true)
 	{
