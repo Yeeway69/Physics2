@@ -27,7 +27,7 @@ using namespace std;
 ModulePhysics::ModulePhysics(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
 	this->app = app;
-	debug = true;
+	debug = false;
 	// Example: Initialize a platform body (this is just for demonstration and can be adapted as needed)
 	int width, height;
 	App->window->GetWindowSize(width, height);
