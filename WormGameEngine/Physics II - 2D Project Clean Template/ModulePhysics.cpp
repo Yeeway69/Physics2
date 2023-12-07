@@ -57,18 +57,26 @@ bool ModulePhysics::Start()
 	LOG("Creating Physics 2D environment");
 
 	// Example of adding platforms
-	platforms.push_back(Platform(fPoint(300, 400), 180, 70, true)); // Position (100, 300), Width 200, Height 30, is a water platform true Esta es la del agua
+	platforms.push_back(Platform(fPoint(425, 400), 180, 70, true)); // Position (100, 300), Width 200, Height 30, is a water platform true Esta es la del agua
 	//platforms.push_back(Platform(fPoint(800, 100), 150, 20, false)); // Another platform
-	platforms.push_back(Platform(fPoint(500, 300), 100, 20, false)); // Another platform
-	platforms.push_back(Platform(fPoint(100, 100), 100, 20, false)); // Another platform
-	platforms.push_back(Platform(fPoint(900, 200), 100, 20, false)); // Another platform
-	platforms.push_back(Platform(fPoint(200, 150), 100, 20, false)); // Another platform
-	platforms.push_back(Platform(fPoint(700, 400), 100, 20, false)); // Another platform
-	platforms.push_back(Platform(fPoint(200, 250), 100, 20, false)); // Another platform
-	platforms.push_back(Platform(fPoint(600, 150), 100, 20, false)); // Another platform
-	platforms.push_back(Platform(fPoint(400, 300), 100, 20, false)); // Another platform
-	platforms.push_back(Platform(fPoint(200, 250), 100, 20, false)); // Another platform
-	platforms.push_back(Platform(fPoint(600, 150), 100, 20, false)); // Another platform
+	platforms.push_back(Platform(fPoint(300, 300), 100, 20, false));
+	platforms.push_back(Platform(fPoint(650, 300), 100, 20, false));
+	platforms.push_back(Platform(fPoint(425, 200), 100, 20, false));
+	platforms.push_back(Platform(fPoint(525, 200), 100, 20, false));
+	platforms.push_back(Platform(fPoint(300, 100), 100, 20, false));
+	platforms.push_back(Platform(fPoint(650, 100), 100, 20, false));
+	platforms.push_back(Platform(fPoint(475, 50), 100, 20, false));
+	platforms.push_back(Platform(fPoint(475, 350), 100, 20, false));
+	// Another platform
+	//platforms.push_back(Platform(fPoint(100, 100), 100, 20, false)); // Another platform
+	//platforms.push_back(Platform(fPoint(900, 200), 100, 20, false)); // Another platform
+	//platforms.push_back(Platform(fPoint(200, 150), 100, 20, false)); // Another platform
+	//platforms.push_back(Platform(fPoint(700, 400), 100, 20, false)); // Another platform
+	//platforms.push_back(Platform(fPoint(200, 250), 100, 20, false)); // Another platform
+	//platforms.push_back(Platform(fPoint(600, 150), 100, 20, false)); // Another platform
+	//platforms.push_back(Platform(fPoint(400, 300), 100, 20, false)); // Another platform
+	//platforms.push_back(Platform(fPoint(200, 250), 100, 20, false)); // Another platform
+	//platforms.push_back(Platform(fPoint(600, 150), 100, 20, false)); // Another platform
 
 	
 	//1024 758
@@ -142,18 +150,16 @@ update_status ModulePhysics::PreUpdate()
 {
 	if (app->scene_intro->restartLevel) {
 		platforms.clear();
-		platforms.push_back(Platform(fPoint(300, 400), 180, 70, true)); 
-		platforms.push_back(Platform(fPoint(800, 100), 150, 20, false));
-		platforms.push_back(Platform(fPoint(500, 300), 100, 20, false));
-		platforms.push_back(Platform(fPoint(100, 100), 100, 20, false));
-		platforms.push_back(Platform(fPoint(900, 200), 100, 20, false));
-		platforms.push_back(Platform(fPoint(200, 150), 100, 20, false));
-		platforms.push_back(Platform(fPoint(700, 400), 100, 20, false));
-		platforms.push_back(Platform(fPoint(200, 250), 100, 20, false));
-		platforms.push_back(Platform(fPoint(600, 150), 100, 20, false));
-		platforms.push_back(Platform(fPoint(400, 300), 100, 20, false));
-		platforms.push_back(Platform(fPoint(200, 250), 100, 20, false));
-		platforms.push_back(Platform(fPoint(600, 150), 100, 20, false));
+		platforms.push_back(Platform(fPoint(425, 400), 180, 70, true)); // Position (100, 300), Width 200, Height 30, is a water platform true Esta es la del agua
+	//platforms.push_back(Platform(fPoint(800, 100), 150, 20, false)); // Another platform
+		platforms.push_back(Platform(fPoint(300, 300), 100, 20, false));
+		platforms.push_back(Platform(fPoint(650, 300), 100, 20, false));
+		platforms.push_back(Platform(fPoint(425, 200), 100, 20, false));
+		platforms.push_back(Platform(fPoint(525, 200), 100, 20, false));
+		platforms.push_back(Platform(fPoint(300, 100), 100, 20, false));
+		platforms.push_back(Platform(fPoint(650, 100), 100, 20, false));
+		platforms.push_back(Platform(fPoint(475, 50), 100, 20, false));
+		platforms.push_back(Platform(fPoint(475, 350), 100, 20, false));
 
 		firstPlayerTower.clear();
 		firstPlayerTower.push_back(Platform(fPoint(100, 275), 150, 25, false)); // Another platform
