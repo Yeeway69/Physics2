@@ -4,6 +4,7 @@
 #include "p2DynArray.h"
 #include "Globals.h"
 
+
 #define BOUNCER_TIME 200
 
 enum lightTypes
@@ -55,7 +56,7 @@ public:
 	SDL_Texture* tex_light_medium;
 	SDL_Texture* tex_light_big;
 
-
+	int scoreFont = -1;
 	
 	uint fx_light_tiny;
 	uint fx_light_medium;

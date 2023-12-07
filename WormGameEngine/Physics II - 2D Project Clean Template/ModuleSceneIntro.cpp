@@ -4,8 +4,10 @@
 #include "ModulePlayer.h"
 #include "ModulePhysics.h"
 #include "ModuleRender.h"
+#include<stdio.h>
 
 
+using namespace std;
 
 ModuleSceneIntro::ModuleSceneIntro(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
@@ -21,6 +23,9 @@ bool ModuleSceneIntro::Start()
 {
 	LOG("Loading Intro assets");
 	bool ret = true;
+
+	char lookupTable[] = { "! @,_./0123456789$;< ?abcdefghijklmnopqrstuvwxyz" };
+	scoreFont = App->fonts->Load("Assets/textocosa4.png", lookupTable, 2);
 
 	//Load Textures
 	backgroundTexture = App->textures->Load("Assets/fondofinal.png");
@@ -75,7 +80,6 @@ update_status ModuleSceneIntro::Update()
 				else
 				{
 					App->renderer->Blit(waterTexture, platform.position.x, platform.position.y);
-
 				}
 
 
@@ -99,6 +103,7 @@ update_status ModuleSceneIntro::Update()
 				App->renderer->Blit(crownTexture, 700, 400);
 			}
 			App->renderer->Blit(crownTexture, 550, 450);
+		
 			
 		}
 		else

@@ -13,7 +13,9 @@ ModulePlayer::ModulePlayer(Application* app, bool start_enabled) : Module(app, s
 }
 
 ModulePlayer::~ModulePlayer()
-{}
+{
+
+}
 
 // Load assets
 bool ModulePlayer::Start()
@@ -263,7 +265,7 @@ update_status ModulePlayer::Update()
 		}
 	}
 
-	if (app->player->firstalive == true && app->player->secondalive == true)
+	if (firstalive == true && secondalive == true)
 	{
 		//This is the power var 
 		App->renderer->DrawGrowingRectangle(SCREEN_WIDTH * 0.05f, SCREEN_HEIGHT / 2, cannonPower, 0, 152, 70, 255, true);
@@ -298,14 +300,25 @@ update_status ModulePlayer::Update()
 		}
 	}
 
-	sprintf_s(scoreText, 10, "%7d", score);
-	sprintf_s(highscoreText, 10, "%7d", highscore);
-	sprintf_s(livesText, 10, "%7d", lives);
+	if (firstalive == false) 
+	{
+		sprintf_s(scoreText, 10, "%7d", app->physics->score2);
+		App->fonts->BlitText(90, 600, scoreFont, "highscore");
+		App->fonts->BlitText(215, 600, scoreFont, scoreText);
+	}
+	else if (secondalive == false)
+	{
+		sprintf_s(scoreText, 10, "%7d", app->physics->score1);
+		App->fonts->BlitText(590, 600, scoreFont, "highscore");
+		App->fonts->BlitText(715, 600, scoreFont, scoreText);
+	}
+	
+	
 
 	//App->fonts->BlitText(1, 15, scoreFont, scoreText);
 
 	//App->fonts->BlitText(2, 2, scoreFont, "player1");
-	App->fonts->BlitText(2, 2, scoreFont, "highscore");
+	
 	/*App->fonts->BlitText(96, 15, scoreFont, highscoreText);
 	App->fonts->BlitText(180, 2, scoreFont, "lives x ");
 	App->fonts->BlitText(192, 2, scoreFont, livesText);*/
